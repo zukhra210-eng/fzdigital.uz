@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FZ Digital — Toshkent raqamli marketing agentligi</title>
+<meta name="description" content="FZ Digital — Toshkentdagi raqamli marketing agentligi. Ijtimoiy tarmoqlar, veb-saytlar, botlar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:#1f2937;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#374151}
+body{background:#000;color:#fff;overflow-x:hidden;margin:0;padding:0;font-family:"Space Grotesk",ui-sans-serif,system-ui,sans-serif}
+
+.scroll-container{position:relative;width:100%;height:500vh;background:#000}
+.fixed-viewport{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000}
+
+/* BRAND */
+.premium-brand-header{position:absolute;top:clamp(24px,3vw,48px);left:clamp(24px,3vw,48px);z-index:45;display:flex;align-items:center;gap:clamp(8px,0.8vw,14px);user-select:none;pointer-events:auto;will-change:transform,opacity,filter}
+@media(max-width:768px){.premium-brand-header{top:24px;left:24px}}
+.premium-brand-text{font-family:"Instrument Serif",serif;font-size:clamp(22px,2.2vw,32px);font-weight:500;color:#fff;letter-spacing:-0.03em}
+.premium-brand-logo-svg{width:clamp(28px,2.6vw,44px);height:auto;opacity:0.95}
+
+/* NAV */
+.premium-header-nav{position:absolute;top:clamp(24px,3vw,48px);right:clamp(24px,3vw,48px);z-index:50;pointer-events:auto;display:flex;align-items:center;gap:12px;will-change:transform,opacity,filter}
+@media(max-width:768px){.premium-header-nav{top:24px;right:24px}}
+.premium-nav-desktop{display:block}
+.premium-nav-list{display:flex;gap:0;margin:0;padding:0;list-style:none;align-items:center}
+.premium-nav-item{margin:0;padding:0}
+.premium-nav-link{display:block;background:#fff;color:#111;font-family:"Manrope",sans-serif;font-size:clamp(12px,0.9vw,15px);font-weight:500;text-decoration:none;padding:clamp(8px,0.7vw,12px) clamp(16px,1.3vw,24px);border-radius:8px;transition:opacity .2s,transform .2s;white-space:nowrap}
+.premium-nav-link:hover{opacity:0.9;transform:scale(1.03)}
+.premium-nav-link:active{transform:scale(0.97)}
+.lang-btn{display:block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;font-family:"Manrope",sans-serif;font-size:clamp(12px,0.85vw,14px);font-weight:600;cursor:pointer;padding:clamp(8px,0.7vw,12px) clamp(14px,1.1vw,20px);border-radius:8px;transition:background .2s,transform .2s;white-space:nowrap;letter-spacing:0.04em}
+.lang-btn:hover{background:rgba(255,255,255,0.2);transform:scale(1.03)}
+.lang-btn:active{transform:scale(0.97)}
+
+/* HAMBURGER */
+.premium-hamburger{display:none}
+@media(max-width:768px){
+  .premium-nav-desktop{display:none}
+  .lang-btn-desktop{display:none}
+  .premium-hamburger{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:rgba(255,255,255,.12);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;padding:0;z-index:60;position:relative}
+  .premium-hamburger:active{transform:scale(0.92)}
+}
+.premium-hamburger-line{display:block;width:20px;height:1.5px;background:#fff;border-radius:2px;transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .2s;transform-origin:center}
+.premium-hamburger-line.top-open{transform:translateY(6.5px) rotate(45deg)}
+.premium-hamburger-line.mid-open{opacity:0}
+.premium-hamburger-line.bot-open{transform:translateY(-6.5px) rotate(-45deg)}
+
+/* MOBILE MENU */
+.premium-mobile-menu{position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.92);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;pointer-events:auto;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.premium-mobile-menu.open{opacity:1;visibility:visible}
+.premium-mobile-menu-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.premium-mobile-menu-link{font-family:"Instrument Serif",serif;font-size:40px;font-weight:400;color:#fff;text-decoration:none;letter-spacing:-0.02em;line-height:1.3;padding:8px 24px;transition:opacity .2s}
+.premium-mobile-menu-link:hover{opacity:0.6}
+.lang-btn-mobile{background:rgba(133,171,139,0.15);border:1px solid rgba(133,171,139,0.4);color:#85AB8B;font-family:"Manrope",sans-serif;font-size:16px;font-weight:600;cursor:pointer;padding:12px 32px;border-radius:8px;transition:background .2s;letter-spacing:0.05em}
+.lang-btn-mobile:hover{background:rgba(133,171,139,0.25)}
+
+/* HERO CARD */
+.premium-botanical-card{position:absolute;bottom:clamp(24px,3vw,48px);left:clamp(24px,3vw,48px);width:clamp(340px,30vw,520px);max-width:90vw;background:rgba(255,255,255,.14);backdrop-filter:blur(80px);-webkit-backdrop-filter:blur(80px);border-radius:0;padding:clamp(32px,3.2vw,56px);z-index:45;pointer-events:auto;border:1px solid rgba(255,255,255,.15);box-shadow:0 30px 60px rgba(0,0,0,.3);will-change:transform,opacity,filter}
+@media(max-width:768px){.premium-botanical-card{bottom:32px;left:24px;padding:32px 24px;width:calc(100vw - 48px)}}
+.premium-card-title{font-family:"Instrument Serif",serif;font-size:clamp(42px,5vw,68px);line-height:1.05;font-weight:400;color:#fff;margin:0 0 clamp(10px,1.2vw,20px) 0;letter-spacing:-0.01em}
+.premium-card-title em{font-style:italic;color:#85AB8B}
+@media(max-width:768px){.premium-card-title{font-size:36px;margin-bottom:10px}}
+.premium-card-subtext{font-family:"Manrope",sans-serif;font-size:clamp(12px,1vw,15px);line-height:1.6;font-weight:400;color:rgba(255,255,255,.64);margin:0;max-width:380px}
+@media(max-width:768px){.premium-card-subtext{font-size:13px}}
+
+/* CTA CIRCLE */
+.premium-action-circle{position:absolute;right:calc(-1*(clamp(80px,7vw,112px)/2));bottom:clamp(20px,2.5vw,40px);width:clamp(80px,7vw,112px);height:clamp(80px,7vw,112px);border-radius:50%;background:#85AB8B;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s cubic-bezier(.16,1,.3,1),background .2s;z-index:55}
+.premium-action-circle:hover{transform:scale(1.08);background:#6e9674}
+.premium-action-circle:active{transform:scale(0.94)}
+.premium-action-circle svg{width:clamp(30px,2.8vw,44px);height:clamp(18px,1.8vw,28px);stroke:#fff;stroke-width:1.75;fill:none;transition:transform .25s}
+.premium-action-circle:hover svg{transform:translateX(4px)}
+@media(max-width:768px){.premium-action-circle{width:64px;height:64px;right:-16px;bottom:-32px}.premium-action-circle svg{width:38px;height:22px}}
+
+/* FEATURE CARDS */
+.premium-features-container{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:max-content;max-width:95%;display:grid;grid-template-columns:repeat(3,280px);justify-content:center;gap:16px;z-index:46;pointer-events:none;align-items:stretch}
+.premium-feature-card{background:rgba(255,255,255,.12);backdrop-filter:blur(80px);-webkit-backdrop-filter:blur(80px);border:1px solid rgba(255,255,255,.15);border-radius:0;padding:24px;width:280px;height:440px;box-shadow:0 30px 60px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;transition:border-color .3s;will-change:transform,opacity,filter}
+.premium-feature-card:hover{border-color:rgba(133,171,139,.5)}
+.premium-feature-icon-wrapper{margin-bottom:32px;color:#85AB8B;display:flex;align-items:center;justify-content:center}
+.premium-feature-icon-wrapper svg{width:clamp(36px,3.5vw,48px);height:clamp(36px,3.5vw,48px);opacity:0.95}
+.premium-feature-title{font-family:"Instrument Serif",serif;font-size:24px;font-weight:400;line-height:1.15;color:#fff;margin:auto 0 8px 0;letter-spacing:-0.01em}
+.premium-feature-desc{font-family:"Manrope",sans-serif;font-size:clamp(12px,1vw,14px);line-height:20px;font-weight:400;color:rgba(255,255,255,.64);margin:0;letter-spacing:0.015em}
+@media(max-width:768px){
+  .premium-features-container{grid-template-columns:1fr;width:calc(100% - 48px);left:24px;transform:translate(0,-50%);top:50%;gap:16px;overflow-y:auto;max-height:80vh}
+  .premium-feature-card{padding:24px;width:100%;height:auto;min-height:240px}
+  .premium-feature-icon-wrapper{margin-bottom:24px}
+}
+
+/* MISSION */
+.mission-container{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:40;padding:0 24px}
+@media(min-width:768px){.mission-container{padding:0 48px}}
+.mission-inner{position:relative;width:100%;max-width:64rem;height:100%;display:flex;align-items:center;justify-content:center}
+.mission-para{position:absolute;text-align:center;user-select:none;pointer-events:none;font-family:"Instrument Serif",serif;font-size:1.875rem;color:rgba(255,255,255,.95);line-height:1.375;letter-spacing:-0.025em;will-change:transform,opacity,filter}
+@media(min-width:768px){.mission-para{font-size:3rem}}
+@media(min-width:1024px){.mission-para{font-size:3.75rem}}
+.mission-pill{display:inline-block;padding:2px 16px;margin:0 6px;background:#85AB8B;color:#fff;border-radius:9999px;vertical-align:middle;font-family:"Instrument Serif",serif}
+@media(min-width:768px){.mission-pill{padding:4px 24px;margin:0 10px}}
+
+/* CONTACT FORM */
+.feedback-container{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:50;padding:0 24px}
+.feedback-form-card{position:relative;width:100%;max-width:28rem;background:rgba(0,0,0,.45);backdrop-filter:blur(48px);-webkit-backdrop-filter:blur(48px);border:1px solid rgba(255,255,255,.1);padding:32px;text-align:center;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none;will-change:transform,opacity,filter}
+@media(min-width:768px){.feedback-form-card{padding:48px}}
+.fb-logo{width:40px;height:40px;margin-bottom:20px}
+.fb-title{font-family:"Instrument Serif",serif;font-size:1.5rem;color:#fff;font-weight:400;letter-spacing:-0.025em;margin:0 0 8px;line-height:1.2;white-space:nowrap}
+@media(min-width:768px){.fb-title{font-size:1.875rem}}
+.fb-sub{font-family:"Space Grotesk",sans-serif;font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:0.05em;margin:0 0 28px;line-height:1.625;max-width:20rem}
+@media(min-width:768px){.fb-sub{font-size:12px}}
+.fb-form{width:100%;display:flex;flex-direction:column;gap:12px}
+.fb-input{width:100%;padding:12px 20px;background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.1);font-family:"Space Grotesk",sans-serif;font-size:14px;letter-spacing:0.025em;text-align:center;outline:none;transition:all .3s}
+.fb-input::placeholder{color:rgba(255,255,255,.3)}
+.fb-input:hover,.fb-input:focus{background:rgba(255,255,255,.1)}
+.fb-input:focus{border-color:#85AB8B}
+@media(min-width:768px){.fb-input{padding:16px 20px;font-size:16px}}
+.fb-btn{width:100%;padding:14px 24px;background:#85AB8B;color:#fff;border:none;cursor:pointer;font-family:"Space Grotesk",sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;transition:all .3s;margin-top:2px}
+.fb-btn:hover{background:#6e9674}
+.fb-btn:active{transform:scale(0.98)}
+.fb-btn.submitted{background:#059669;cursor:default}
+@media(min-width:768px){.fb-btn{padding:16px 24px}}
+.fb-success{margin-top:16px;font-family:"Space Grotesk",sans-serif;font-size:12px;color:#85AB8B;font-weight:500;letter-spacing:0.025em;line-height:1.625;display:none}
+.fb-success.show{display:block;animation:fadeIn .5s ease}
+
+/* VIDEO BG */
+.bg-wrapper{position:absolute;top:-5%;left:-5%;right:-5%;bottom:-5%;width:110%;height:110%;pointer-events:none;user-select:none;transform:translate3d(0,0,0);transition:transform .4s cubic-bezier(.15,.85,.35,1)}
+.bg-wrapper video{position:absolute;width:0;height:0;opacity:0}
+.bg-wrapper canvas{width:100%;height:100%;display:block}
+
+/* LOADING */
+.loading-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;z-index:60;transition:opacity 1s;padding:24px;text-align:center}
+.loading-screen.hidden{opacity:0;pointer-events:none}
+.loading-spinner{width:64px;height:64px;margin-bottom:16px;animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:0.1em;color:#6b7280;text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ERROR */
+.error-screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:#000;z-index:55;padding:24px;text-align:center}
+.error-screen.show{display:flex}
+.error-card{padding:16px;border:1px solid #1f2937;border-radius:4px;background:#09090b;max-width:28rem}
+.error-title{color:#ef4444;font-family:"JetBrains Mono",monospace;font-size:14px;margin:0 0 8px}
+.error-msg{color:#9ca3af;font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.625;margin:0}
+
+/* WHATSAPP FLOAT */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:100;width:52px;height:52px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .2s,box-shadow .2s;text-decoration:none}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.55)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
+</style>
+</head>
+<body>
+
+<div class="scroll-container" id="scrollContainer">
+  <div class="fixed-viewport">
+
+    <!-- Brand -->
+    <div class="premium-brand-header" id="brandHeader">
+      <svg viewBox="0 0 56 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="premium-brand-logo-svg">
+        <text x="0" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="white">F</text>
+        <text x="24" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="#85AB8B">Z</text>
+      </svg>
+      <span class="premium-brand-text" id="brandName">FZ Digital</span>
+    </div>
+
+    <!-- Nav -->
+    <header class="premium-header-nav" id="navHeader">
+      <button class="lang-btn lang-btn-desktop" id="langBtnDesktop">RU</button>
+      <nav class="premium-nav-desktop">
+        <ul class="premium-nav-list">
+          <li class="premium-nav-item"><a href="#about" class="premium-nav-link" id="nav1">Biz haqimizda</a></li>
+          <li class="premium-nav-item"><a href="#services" class="premium-nav-link" id="nav2">Xizmatlar</a></li>
+          <li class="premium-nav-item"><a href="#contact" class="premium-nav-link" id="nav3">Bog'lanish</a></li>
+        </ul>
+      </nav>
+      <button class="premium-hamburger" id="hamburgerBtn" aria-label="Open menu">
+        <span class="premium-hamburger-line" id="hLine1"></span>
+        <span class="premium-hamburger-line" id="hLine2"></span>
+        <span class="premium-hamburger-line" id="hLine3"></span>
+      </button>
+    </header>
+
+    <!-- Mobile menu -->
+    <div class="premium-mobile-menu" id="mobileMenu">
+      <nav>
+        <ul class="premium-mobile-menu-list">
+          <li><a href="#about" class="premium-mobile-menu-link mobile-link" id="mnav1">Biz haqimizda</a></li>
+          <li><a href="#services" class="premium-mobile-menu-link mobile-link" id="mnav2">Xizmatlar</a></li>
+          <li><a href="#contact" class="premium-mobile-menu-link mobile-link" id="mnav3">Bog'lanish</a></li>
+        </ul>
+      </nav>
+      <button class="lang-btn-mobile" id="langBtnMobile">RU — Русский</button>
+    </div>
+
+    <!-- Hero card -->
+    <div class="premium-botanical-card" id="botanicalCard">
+      <h2 class="premium-card-title" id="heroTitle">Raqamli dunyoda <em>brendingizni</em><br>kuchaytiring.</h2>
+      <p class="premium-card-subtext" id="heroSub">Toshkentdagi bizneslar uchun ijtimoiy tarmoqlar strategiyasi, zamonaviy veb-saytlar va avtomatlashtirish yechimlari.</p>
+      <button class="premium-action-circle" id="ctaBtn" aria-label="Boshlash">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 40 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M29.5 4.5L37 12m0 0l-7.5 7.5M37 12H3"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Feature cards -->
+    <div class="premium-features-container" id="featuresContainer" style="visibility:hidden">
+      <div class="premium-feature-card" id="fCard1" style="opacity:0">
+        <div class="premium-feature-icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="5" cy="12" r="2.5"/>
+            <circle cx="19" cy="5" r="2.5"/>
+            <circle cx="19" cy="19" r="2.5"/>
+            <line x1="7.5" y1="10.8" x2="16.5" y2="6.2" stroke-linecap="round"/>
+            <line x1="7.5" y1="13.2" x2="16.5" y2="17.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="premium-feature-title" id="f1title">Ijtimoiy tarmoqlar</h3>
+        <p class="premium-feature-desc" id="f1desc">Organik strategiya, kontent yaratish va doimiy faollik orqali brendingizni ijtimoiy tarmoqlarda rivojlantiring.</p>
+      </div>
+      <div class="premium-feature-card" id="fCard2" style="opacity:0">
+        <div class="premium-feature-icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <line x1="2" y1="9" x2="22" y2="9"/>
+            <circle cx="5.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+            <circle cx="8.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+            <circle cx="11.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h3 class="premium-feature-title" id="f2title">Veb-sayt yaratish</h3>
+        <p class="premium-feature-desc" id="f2desc">Tez, responsiv va zamonaviy veb-saytlar — brending, marketing va lead generatsiyani qo'llab-quvvatlovchi.</p>
+      </div>
+      <div class="premium-feature-card" id="fCard3" style="opacity:0">
+        <div class="premium-feature-icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="4" y="8" width="16" height="12" rx="2"/>
+            <circle cx="9" cy="14" r="1.5"/>
+            <circle cx="15" cy="14" r="1.5"/>
+            <path d="M9 8V6a3 3 0 016 0v2" stroke-linecap="round"/>
+            <line x1="12" y1="2" x2="12" y2="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="premium-feature-title" id="f3title">Bot yaratish</h3>
+        <p class="premium-feature-desc" id="f3desc">Telegram va boshqa platformalar uchun maxsus chatbotlar — mijozlarga xizmat ko'rsatish va jarayonlarni avtomatlashtirish.</p>
+      </div>
+    </div>
+
+    <!-- Mission -->
+    <div class="mission-container" id="missionContainer" style="visibility:hidden">
+      <div class="mission-inner">
+        <div class="mission-para" id="mPara1" style="opacity:0">Har bir mahalliy biznesni <span class="mission-pill">raqamli olamda</span> kuchli va ko'rinadigan qilishga intilamiz.</div>
+        <div class="mission-para" id="mPara2" style="opacity:0">Ijtimoiy tarmoqlar orqali <span class="mission-pill">brendingizni</span> yangi bosqichga ko'taramiz.</div>
+        <div class="mission-para" id="mPara3" style="opacity:0">Biz shunchaki xizmat emas — sizning <span class="mission-pill">raqamli hamkor</span>ingizmiz.</div>
+      </div>
+    </div>
+
+    <!-- Contact form -->
+    <div class="feedback-container" id="feedbackContainer" style="visibility:hidden">
+      <div class="feedback-form-card" id="feedbackForm" style="opacity:0">
+        <svg viewBox="0 0 56 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="fb-logo">
+          <text x="0" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="white">F</text>
+          <text x="24" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="#85AB8B">Z</text>
+        </svg>
+        <h3 class="fb-title" id="formTitle">Hamkorlik boshlaylik</h3>
+        <p class="fb-sub" id="formSub">Bepul maslahat uchun ma'lumotlaringizni qoldiring.</p>
+        <form class="fb-form" id="fbForm">
+          <input type="text" required placeholder="Ismingiz" class="fb-input" id="fbName">
+          <input type="email" required placeholder="Email manzilingiz" class="fb-input" id="fbEmail">
+          <button type="submit" class="fb-btn" id="fbBtn">YO'LLANG</button>
+        </form>
+        <p class="fb-success" id="fbSuccess">Rahmat! Tez orada siz bilan bog'lanamiz.</p>
+      </div>
+    </div>
+
+    <!-- Video background (same video × 3 for scrubbing across full scroll) -->
+    <div class="bg-wrapper" id="bgWrapper">
+      <video id="v1" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
+      <video id="v2" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
+      <video id="v3" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
+      <canvas id="mainCanvas"></canvas>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-screen" id="loadingScreen">
+      <svg class="loading-spinner" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+        <circle cx="32" cy="32" r="28" stroke="#1f2937" stroke-width="2" fill="transparent"/>
+        <circle cx="32" cy="32" r="28" stroke="#85AB8B" stroke-width="3" fill="transparent" stroke-dasharray="176" stroke-dashoffset="132" stroke-linecap="round"/>
+      </svg>
+      <p class="loading-text">Loading experience</p>
+    </div>
+
+    <!-- Error -->
+    <div class="error-screen" id="errorScreen">
+      <div class="error-card">
+        <p class="error-title">Video Load Error</p>
+        <p class="error-msg">Unable to load video. Please check your connection and reload.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- WhatsApp float -->
+<a href="https://wa.me/998901234567" class="wa-float" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+(function(){
+
+/* ── TRANSLATIONS ─────────────────────────────────────────── */
+var T = {
+  uz: {
+    pageTitle: "FZ Digital — Toshkent raqamli marketing agentligi",
+    langBtn: "RU",
+    langBtnMobile: "RU — Русский",
+    nav1: "Biz haqimizda", nav2: "Xizmatlar", nav3: "Bog\u2019lanish",
+    heroTitle: "Raqamli dunyoda <em>brendingizni</em><br>kuchaytiring.",
+    heroSub: "Toshkentdagi bizneslar uchun ijtimoiy tarmoqlar strategiyasi, zamonaviy veb-saytlar va avtomatlashtirish yechimlari.",
+    f1title: "Ijtimoiy tarmoqlar",
+    f1desc: "Organik strategiya, kontent yaratish va doimiy faollik orqali brendingizni ijtimoiy tarmoqlarda rivojlantiring.",
+    f2title: "Veb-sayt yaratish",
+    f2desc: "Tez, responsiv va zamonaviy veb-saytlar \u2014 brending, marketing va lead generatsiyani qo\u2018llab-quvvatlovchi.",
+    f3title: "Bot yaratish",
+    f3desc: "Telegram va boshqa platformalar uchun maxsus chatbotlar \u2014 mijozlarga xizmat ko\u2018rsatish va jarayonlarni avtomatlashtirish.",
+    m1: "Har bir mahalliy biznesni <span class=\"mission-pill\">raqamli olamda</span> kuchli va ko\u2018rinadigan qilishga intilamiz.",
+    m2: "Ijtimoiy tarmoqlar orqali <span class=\"mission-pill\">brendingizni</span> yangi bosqichga ko\u2018taramiz.",
+    m3: "Biz shunchaki xizmat emas \u2014 sizning <span class=\"mission-pill\">raqamli hamkor</span>ingizmiz.",
+    formTitle: "Hamkorlik boshlaylik",
+    formSub: "Bepul maslahat uchun ma\u2019lumotlaringizni qoldiring.",
+    namePh: "Ismingiz",
+    emailPh: "Email manzilingiz",
+    btnText: "YO\u02BBLLANG",
+    successText: "Rahmat! Tez orada siz bilan bog\u02BBlanamiz."
+  },
+  ru: {
+    pageTitle: "\u0424\u0417 Digital \u2014 \u0426\u0438\u0444\u0440\u043e\u0432\u043e\u0435 \u0430\u0433\u0435\u043d\u0442\u0441\u0442\u0432\u043e \u0422\u0430\u0448\u043a\u0435\u043d\u0442",
+    langBtn: "O\u02BBZ",
+    langBtnMobile: "O\u02BBZ \u2014 O\u02BBzbek",
+    nav1: "\u041e \u043d\u0430\u0441", nav2: "\u0423\u0441\u043b\u0443\u0433\u0438", nav3: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b",
+    heroTitle: "\u0423\u0441\u0438\u043b\u044c\u0442\u0435 \u0432\u0430\u0448 <em>\u0431\u0440\u0435\u043d\u0434</em><br>\u0432 \u0446\u0438\u0444\u0440\u043e\u0432\u043e\u043c \u043c\u0438\u0440\u0435.",
+    heroSub: "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0441\u043e\u0446\u0441\u0435\u0442\u0435\u0439, \u0441\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435 \u0441\u0430\u0439\u0442\u044b \u0438 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u0434\u043b\u044f \u0431\u0438\u0437\u043d\u0435\u0441\u0430 \u0432 \u0422\u0430\u0448\u043a\u0435\u043d\u0442\u0435.",
+    f1title: "\u0421\u043e\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u0435\u0442\u0438",
+    f1desc: "\u041e\u0440\u0433\u0430\u043d\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f, \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u0435 \u043a\u043e\u043d\u0442\u0435\u043d\u0442\u0430 \u0438 \u043f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u0430\u044f \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0434\u043b\u044f \u0440\u043e\u0441\u0442\u0430 \u0432\u0430\u0448\u0435\u0433\u043e \u0431\u0440\u0435\u043d\u0434\u0430.",
+    f2title: "\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0441\u0430\u0439\u0442\u043e\u0432",
+    f2desc: "\u0411\u044b\u0441\u0442\u0440\u044b\u0435, \u0430\u0434\u0430\u043f\u0442\u0438\u0432\u043d\u044b\u0435 \u0438 \u0441\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435 \u0441\u0430\u0439\u0442\u044b \u2014 \u0434\u043b\u044f \u043c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433\u0430 \u0438 \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438 \u043b\u0438\u0434\u043e\u0432.",
+    f3title: "\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0431\u043e\u0442\u043e\u0432",
+    f3desc: "\u0427\u0430\u0442-\u0431\u043e\u0442\u044b \u0434\u043b\u044f Telegram \u0438 \u0434\u0440\u0443\u0433\u0438\u0445 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c \u2014 \u043e\u0431\u0441\u043b\u0443\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u0432 \u0438 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f.",
+    m1: "\u041c\u044b \u0434\u0435\u043b\u0430\u0435\u043c \u043a\u0430\u0436\u0434\u044b\u0439 \u043c\u0435\u0441\u0442\u043d\u044b\u0439 \u0431\u0438\u0437\u043d\u0435\u0441 <span class=\"mission-pill\">\u0432\u0438\u0434\u0438\u043c\u044b\u043c</span> \u0432 \u0446\u0438\u0444\u0440\u043e\u0432\u043e\u043c \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u0435.",
+    m2: "\u0427\u0435\u0440\u0435\u0437 \u0441\u043e\u0446\u0441\u0435\u0442\u0438 \u043c\u044b \u0432\u044b\u0432\u043e\u0434\u0438\u043c \u0432\u0430\u0448 <span class=\"mission-pill\">\u0431\u0440\u0435\u043d\u0434</span> \u043d\u0430 \u043d\u043e\u0432\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c.",
+    m3: "\u041c\u044b \u043d\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0443\u0441\u043b\u0443\u0433\u0430 \u2014 \u043c\u044b \u0432\u0430\u0448 <span class=\"mission-pill\">\u0446\u0438\u0444\u0440\u043e\u0432\u043e\u0439 \u043f\u0430\u0440\u0442\u043d\u0451\u0440</span>.",
+    formTitle: "\u041d\u0430\u0447\u043d\u0451\u043c \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u0447\u0435\u0441\u0442\u0432\u043e",
+    formSub: "\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u044b \u0434\u043b\u044f \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e\u0439 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u0438.",
+    namePh: "\u0412\u0430\u0448\u0435 \u0438\u043c\u044f",
+    emailPh: "\u0412\u0430\u0448 email",
+    btnText: "\u041e\u0422\u041f\u0420\u0410\u0412\u0418\u0422\u042c",
+    successText: "\u0421\u043f\u0430\u0441\u0438\u0431\u043e! \u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043c\u044f."
+  }
+};
+
+var currentLang = 'uz';
+
+function updateLang(lang) {
+  currentLang = lang;
+  var d = T[lang];
+  document.title = d.pageTitle;
+  document.documentElement.lang = lang;
+  el('langBtnDesktop').textContent = d.langBtn;
+  el('langBtnMobile').textContent = d.langBtnMobile;
+  el('nav1').textContent = d.nav1;
+  el('nav2').textContent = d.nav2;
+  el('nav3').textContent = d.nav3;
+  el('mnav1').textContent = d.nav1;
+  el('mnav2').textContent = d.nav2;
+  el('mnav3').textContent = d.nav3;
+  el('heroTitle').innerHTML = d.heroTitle;
+  el('heroSub').textContent = d.heroSub;
+  el('f1title').textContent = d.f1title;
+  el('f1desc').textContent = d.f1desc;
+  el('f2title').textContent = d.f2title;
+  el('f2desc').textContent = d.f2desc;
+  el('f3title').textContent = d.f3title;
+  el('f3desc').textContent = d.f3desc;
+  el('mPara1').innerHTML = d.m1;
+  el('mPara2').innerHTML = d.m2;
+  el('mPara3').innerHTML = d.m3;
+  el('formTitle').textContent = d.formTitle;
+  el('formSub').textContent = d.formSub;
+  el('fbName').placeholder = d.namePh;
+  el('fbEmail').placeholder = d.emailPh;
+  if (!el('fbBtn').classList.contains('submitted')) {
+    el('fbBtn').textContent = d.btnText;
+  }
+  el('fbSuccess').textContent = d.successText;
+}
+
+function el(id) { return document.getElementById(id); }
+
+/* ── VIDEO ENGINE (identical to Bloom) ───────────────────── */
+var container = el('scrollContainer');
+var videos = { v1: el('v1'), v2: el('v2'), v3: el('v3') };
+var canvas = el('mainCanvas');
+var bgWrapper = el('bgWrapper');
+var brandHeader = el('brandHeader');
+var navHeader = el('navHeader');
+var botanicalCard = el('botanicalCard');
+var featuresContainer = el('featuresContainer');
+var fCard1 = el('fCard1'), fCard2 = el('fCard2'), fCard3 = el('fCard3');
+var missionContainer = el('missionContainer');
+var mPara1 = el('mPara1'), mPara2 = el('mPara2'), mPara3 = el('mPara3');
+var feedbackContainer = el('feedbackContainer');
+var feedbackForm = el('feedbackForm');
+var loadingScreen = el('loadingScreen');
+var errorScreen = el('errorScreen');
+
+var targetProgress = 0, currentProgress = 0;
+var durations = { v1:0, v2:0, v3:0 };
+var metaLoaded = { v1:false, v2:false, v3:false };
+var seeking = { v1:false, v2:false, v3:false };
+var pendingSeek = { v1:-1, v2:-1, v3:-1 };
+var offscreen = null;
+
+function getActiveKey(p){ return p<=0.333?'v1':p<=0.666?'v2':'v3'; }
+
+function drawFrame(){
+  var p = currentProgress;
+  var key = getActiveKey(p);
+  var video = videos[key];
+  if(!video||video.readyState<2)return;
+  var dpr=window.devicePixelRatio||1;
+  var cW=canvas.width/dpr,cH=canvas.height/dpr;
+  if(cW===0||cH===0)return;
+  var vW=video.videoWidth||1920,vH=video.videoHeight||1080;
+  var vA=vW/vH,cA=cW/cH;
+  var dW=cW,dH=cH,oX=0,oY=0;
+  if(vA>cA){dW=cH*vA;oX=(cW-dW)/2;}else{dH=cW/vA;oY=(cH-dH)/2;}
+  if(!offscreen)offscreen=document.createElement('canvas');
+  if(offscreen.width!==canvas.width||offscreen.height!==canvas.height){offscreen.width=canvas.width;offscreen.height=canvas.height;}
+  var oc=offscreen.getContext('2d');
+  if(!oc)return;
+  try{
+    oc.setTransform(dpr,0,0,dpr,0,0);
+    oc.clearRect(0,0,cW,cH);
+    oc.drawImage(video,oX,oY,dW,dH);
+    var ctx=canvas.getContext('2d');
+    if(!ctx)return;
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.drawImage(offscreen,0,0);
+  }catch(e){}
+}
+
+function handleResize(){
+  var parent=canvas.parentElement;
+  if(!parent)return;
+  var dpr=window.devicePixelRatio||1;
+  var w=parent.clientWidth,h=parent.clientHeight;
+  canvas.width=w*dpr;canvas.height=h*dpr;
+  canvas.style.width=w+'px';canvas.style.height=h+'px';
+  if(offscreen){offscreen.width=canvas.width;offscreen.height=canvas.height;}
+  drawFrame();
+}
+
+function safeSeek(key,targetTime){
+  var video=videos[key];
+  if(!video)return;
+  var dur=durations[key]||video.duration||10;
+  var clamped=Math.max(0,Math.min(targetTime,dur-0.05));
+  if(Math.abs(video.currentTime-clamped)<0.01)return;
+  if(seeking[key]){pendingSeek[key]=clamped;return;}
+  seeking[key]=true;pendingSeek[key]=-1;
+  video.currentTime=clamped;
+}
+
+['v1','v2','v3'].forEach(function(key){
+  videos[key].addEventListener('seeked',function(){
+    seeking[key]=false;
+    if(key===getActiveKey(currentProgress))drawFrame();
+    if(pendingSeek[key]>=0){var t=pendingSeek[key];pendingSeek[key]=-1;safeSeek(key,t);}
+  });
+});
+
+function checkAllReady(){
+  if(metaLoaded.v1&&metaLoaded.v2&&metaLoaded.v3){
+    setTimeout(function(){loadingScreen.classList.add('hidden');handleResize();},100);
+  }
+}
+['v1','v2','v3'].forEach(function(key){
+  var vid=videos[key];
+  function onMeta(){
+    var d=vid.duration;
+    if(d&&!isNaN(d)&&d>0&&d!==Infinity){durations[key]=d;metaLoaded[key]=true;checkAllReady();}
+  }
+  vid.addEventListener('loadedmetadata',onMeta);
+  vid.addEventListener('durationchange',onMeta);
+  vid.addEventListener('canplay',onMeta);
+  vid.addEventListener('error',function(){errorScreen.classList.add('show');});
+  if(vid.readyState>=1)onMeta();
+});
+setTimeout(function(){
+  ['v1','v2','v3'].forEach(function(key){
+    if(!metaLoaded[key]){durations[key]=videos[key].duration||10;metaLoaded[key]=true;}
+  });
+  checkAllReady();
+},8000);
+
+window.addEventListener('resize',handleResize);
+
+window.addEventListener('mousemove',function(e){
+  var x=(e.clientX-window.innerWidth/2)/(window.innerWidth/2);
+  var y=(e.clientY-window.innerHeight/2)/(window.innerHeight/2);
+  bgWrapper.style.transform='translate3d('+(x*-24)+'px,'+(y*-24)+'px,0)';
+});
+
+window.addEventListener('scroll',function(){
+  var scrollTop=window.pageYOffset||document.documentElement.scrollTop;
+  var maxScroll=container.scrollHeight-window.innerHeight;
+  targetProgress=maxScroll>0?Math.max(0,Math.min(1,scrollTop/maxScroll)):0;
+},{passive:true});
+
+function setVisible(el,v){if(!el)return;el.style.visibility=v?'visible':'hidden';el.style.pointerEvents=v?'auto':'none';}
+function applyStyle(el,op,tx,ty,bl){
+  if(!el)return;
+  el.style.opacity=op;
+  el.style.transform='translate3d('+tx+'px,'+ty+'px,0)';
+  el.style.filter='blur('+bl+'px)';
+}
+
+function tick(){
+  currentProgress+=(targetProgress-currentProgress)*0.08;
+  var p=currentProgress;
+
+  var activeKey=getActiveKey(p);
+  var pLocal=activeKey==='v1'?Math.max(0,Math.min(1,p*3))
+    :activeKey==='v2'?Math.max(0,Math.min(1,(p-0.333)*3))
+    :Math.max(0,Math.min(1,(p-0.666)*3));
+  safeSeek(activeKey,pLocal*(durations[activeKey]||10));
+  drawFrame();
+
+  // Botanical card
+  var f=Math.min(1,Math.max(0,p/0.15));
+  applyStyle(botanicalCard,1-f,f*-35,f*35,f*16);
+  botanicalCard.style.pointerEvents=f>0.95?'none':'auto';
+
+  // Nav header
+  f=Math.min(1,Math.max(0,(p-0.03)/0.15));
+  applyStyle(navHeader,1-f,0,f*-35,f*14);
+  navHeader.style.pointerEvents=f>0.95?'none':'auto';
+
+  // Brand header
+  f=Math.min(1,Math.max(0,(p-0.06)/0.15));
+  applyStyle(brandHeader,1-f,f*-25,f*-35,f*12);
+  brandHeader.style.pointerEvents=f>0.95?'none':'auto';
+
+  // Feature cards
+  var show=p>0.13&&p<0.55;
+  setVisible(featuresContainer,show);
+  function animCard(elem,enterStart,enterDur,exitStart,exitDur,tx,ty){
+    if(!elem)return;
+    var op=0,bl=16,x=tx,y=ty;
+    if(p>=enterStart&&p<=0.333){
+      var r=Math.min(1,Math.max(0,(p-enterStart)/enterDur));
+      op=r;bl=(1-r)*16;x=(1-r)*tx;y=(1-r)*ty;
+    }else if(p>0.333&&p<=exitStart+exitDur){
+      var r=Math.min(1,Math.max(0,(p-exitStart)/exitDur));
+      op=1-r;bl=r*16;x=r*tx;y=r*ty;
+    }
+    applyStyle(elem,op,x,y,bl);
+  }
+  animCard(fCard1,0.15,0.15,0.333,0.12,-35,35);
+  animCard(fCard2,0.18,0.13,0.333,0.15,0,35);
+  animCard(fCard3,0.21,0.11,0.333,0.18,35,35);
+
+  // Mission
+  setVisible(missionContainer,p>0.44);
+  function animPara(elem,inS,inE,holdE,outE){
+    if(!elem)return;
+    var op=0,bl=20,y=120;
+    if(p>=inS&&p<inE){var r=(p-inS)/(inE-inS);op=r;bl=(1-r)*20;y=(1-r)*120;}
+    else if(p>=inE&&p<=holdE){op=1;bl=0;y=0;}
+    else if(p>holdE&&p<=outE){var r=(p-holdE)/(outE-holdE);op=1-r;bl=r*20;y=r*-120;}
+    else if(p>outE){op=0;bl=20;y=-120;}
+    applyStyle(elem,op,0,y,bl);
+  }
+  animPara(mPara1,0.44,0.47,0.59,0.62);
+  animPara(mPara2,0.62,0.65,0.77,0.80);
+  animPara(mPara3,0.80,0.83,0.95,0.98);
+
+  // Contact form
+  setVisible(feedbackContainer,p>0.93);
+  if(p>0.93){
+    var opF=0,blF=20,yF=120;
+    if(p>=0.94&&p<0.97){var r=(p-0.94)/0.03;opF=r;blF=(1-r)*20;yF=(1-r)*120;}
+    else if(p>=0.97){opF=1;blF=0;yF=0;}
+    applyStyle(feedbackForm,opF,0,yF,blF);
+  }
+
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+/* ── HAMBURGER ────────────────────────────────────────────── */
+var menuOpen=false;
+var hamburgerBtn=el('hamburgerBtn');
+var mobileMenu=el('mobileMenu');
+var hLine1=el('hLine1'),hLine2=el('hLine2'),hLine3=el('hLine3');
+hamburgerBtn.addEventListener('click',function(){
+  menuOpen=!menuOpen;
+  mobileMenu.classList.toggle('open',menuOpen);
+  hLine1.classList.toggle('top-open',menuOpen);
+  hLine2.classList.toggle('mid-open',menuOpen);
+  hLine3.classList.toggle('bot-open',menuOpen);
+  hamburgerBtn.setAttribute('aria-label',menuOpen?'Close menu':'Open menu');
+});
+document.querySelectorAll('.mobile-link').forEach(function(a){
+  a.addEventListener('click',function(){
+    menuOpen=false;
+    mobileMenu.classList.remove('open');
+    hLine1.classList.remove('top-open');
+    hLine2.classList.remove('mid-open');
+    hLine3.classList.remove('bot-open');
+  });
+});
+
+/* ── CTA BUTTON ───────────────────────────────────────────── */
+el('ctaBtn').addEventListener('click',function(){
+  window.scrollTo({top:window.innerHeight*0.9,behavior:'smooth'});
+});
+
+/* ── LANGUAGE TOGGLE ──────────────────────────────────────── */
+function toggleLang(){
+  updateLang(currentLang==='uz'?'ru':'uz');
+}
+el('langBtnDesktop').addEventListener('click',toggleLang);
+el('langBtnMobile').addEventListener('click',function(){
+  toggleLang();
+  menuOpen=false;
+  mobileMenu.classList.remove('open');
+  hLine1.classList.remove('top-open');
+  hLine2.classList.remove('mid-open');
+  hLine3.classList.remove('bot-open');
+});
+
+/* ── CONTACT FORM ─────────────────────────────────────────── */
+el('fbForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var name=el('fbName').value.trim();
+  var email=el('fbEmail').value.trim();
+  if(name&&email){
+    var btn=el('fbBtn');
+    btn.textContent=currentLang==='uz'?'YUBORILDI':'ОТПРАВЛЕНО';
+    btn.classList.add('submitted');
+    btn.disabled=true;
+    el('fbSuccess').classList.add('show');
+  }
+});
+
+})();
+</script>
+</body>
+</html>
