@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FZ Digital — Sizning ishonchli raqamli hamkoringiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:#1f2937;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#374151}
+body{background:#000;color:#fff;overflow-x:hidden;margin:0;padding:0;font-family:"Space Grotesk",ui-sans-serif,system-ui,sans-serif}
+
+.scroll-container{position:relative;width:100%;height:500vh;background:#000}
+.fixed-viewport{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000}
+
+/* BRAND */
+.premium-brand-header{position:absolute;top:clamp(24px,3vw,48px);left:clamp(24px,3vw,48px);z-index:45;display:flex;align-items:center;gap:clamp(8px,0.8vw,14px);user-select:none;pointer-events:auto;will-change:transform,opacity,filter}
+@media(max-width:768px){.premium-brand-header{top:24px;left:24px}}
+.premium-brand-text{font-family:"Instrument Serif",serif;font-size:clamp(22px,2.2vw,32px);font-weight:500;color:#fff;letter-spacing:-0.03em}
+.premium-brand-logo-svg{width:clamp(28px,2.6vw,44px);height:auto;opacity:0.95}
+
+/* NAV */
+.premium-header-nav{position:absolute;top:clamp(24px,3vw,48px);right:clamp(24px,3vw,48px);z-index:50;pointer-events:auto;will-change:transform,opacity,filter;display:flex;align-items:center;gap:8px}
+@media(max-width:768px){.premium-header-nav{top:24px;right:24px}}
+.premium-nav-desktop{display:block}
+@media(max-width:768px){.premium-nav-desktop{display:none}.lang-btn-desktop{display:none}}
+.premium-nav-list{display:flex;gap:0;margin:0;padding:0;list-style:none;align-items:center}
+.premium-nav-item{margin:0;padding:0}
+.premium-nav-link{display:block;background:#fff;color:#111;font-family:"Manrope",sans-serif;font-size:clamp(12px,0.9vw,15px);font-weight:500;text-decoration:none;padding:clamp(8px,0.7vw,12px) clamp(16px,1.3vw,24px);border-radius:8px;transition:opacity .2s ease,transform .2s ease;white-space:nowrap}
+.premium-nav-link:hover{opacity:0.9;transform:scale(1.03)}
+.premium-nav-link:active{transform:scale(0.97)}
+.lang-btn{display:block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;font-family:"Manrope",sans-serif;font-size:clamp(12px,0.85vw,14px);font-weight:600;cursor:pointer;padding:clamp(8px,0.7vw,12px) clamp(14px,1.1vw,20px);border-radius:8px;transition:background .2s,transform .2s;white-space:nowrap;letter-spacing:0.04em}
+.lang-btn:hover{background:rgba(255,255,255,0.2);transform:scale(1.03)}
+
+/* HAMBURGER */
+.premium-hamburger{display:none}
+@media(max-width:768px){
+  .premium-hamburger{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:rgba(255,255,255,.12);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;padding:0;z-index:60;position:relative}
+  .premium-hamburger:active{transform:scale(0.92)}
+}
+.premium-hamburger-line{display:block;width:20px;height:1.5px;background:#fff;border-radius:2px;transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .2s ease;transform-origin:center}
+.premium-hamburger-line.top-open{transform:translateY(6.5px) rotate(45deg)}
+.premium-hamburger-line.mid-open{opacity:0}
+.premium-hamburger-line.bot-open{transform:translateY(-6.5px) rotate(-45deg)}
+
+/* MOBILE MENU */
+.premium-mobile-menu{position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.92);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;pointer-events:auto;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+.premium-mobile-menu.open{opacity:1;visibility:visible}
+.premium-mobile-menu-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.premium-mobile-menu-link{font-family:"Instrument Serif",serif;font-size:40px;font-weight:400;color:#fff;text-decoration:none;letter-spacing:-0.02em;line-height:1.3;padding:8px 24px;transition:opacity .2s}
+.premium-mobile-menu-link:hover,.premium-mobile-menu-link:active{opacity:0.6}
+.mob-lang-btn{background:rgba(133,171,139,0.15);border:1px solid rgba(133,171,139,0.4);color:#85AB8B;font-family:"Manrope",sans-serif;font-size:16px;font-weight:600;cursor:pointer;padding:12px 32px;border-radius:8px;transition:background .2s;letter-spacing:0.05em}
+.mob-lang-btn:hover{background:rgba(133,171,139,0.25)}
+
+/* BOTANICAL CARD */
+.premium-botanical-card{position:absolute;bottom:clamp(24px,3vw,48px);left:clamp(24px,3vw,48px);width:clamp(340px,30vw,520px);max-width:calc(100vw - 48px);background:rgba(255,255,255,.16);backdrop-filter:blur(80px);-webkit-backdrop-filter:blur(80px);border-radius:0;padding:clamp(28px,3.2vw,56px);z-index:45;pointer-events:auto;border:1px solid rgba(255,255,255,.15);box-shadow:0 30px 60px rgba(0,0,0,.3);will-change:transform,opacity,filter}
+@media(max-width:768px){.premium-botanical-card{bottom:24px;left:16px;right:16px;padding:28px 20px 52px;width:auto;max-width:none}}
+.premium-card-title{font-family:"Instrument Serif",serif;font-size:clamp(32px,5vw,68px);line-height:1.05;font-weight:400;color:#fff;margin:0 0 clamp(10px,1.2vw,20px) 0;letter-spacing:-0.01em}
+.premium-card-title em{font-style:italic;color:#85AB8B}
+@media(max-width:480px){.premium-card-title{font-size:30px}}
+.premium-card-subtext{font-family:"Manrope",sans-serif;font-size:clamp(12px,1vw,15px);line-height:1.6;font-weight:400;color:rgba(255,255,255,.64);margin:0;max-width:380px}
+
+/* CTA CIRCLE */
+.premium-action-circle{position:absolute;right:calc(-1*(clamp(64px,7vw,112px)/2));bottom:clamp(16px,2.5vw,40px);width:clamp(64px,7vw,112px);height:clamp(64px,7vw,112px);border-radius:50%;background:#85AB8B;color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s cubic-bezier(.16,1,.3,1),background-color .2s ease;z-index:55;text-decoration:none}
+.premium-action-circle:hover{transform:scale(1.08);background:#6e9674}
+.premium-action-circle:active{transform:scale(0.94)}
+.premium-action-circle svg{width:clamp(26px,2.8vw,44px);height:clamp(16px,1.8vw,28px);stroke:#fff;stroke-width:1.75;fill:none;transition:transform .25s ease}
+.premium-action-circle:hover svg{transform:translateX(4px)}
+
+/* FEATURE CARDS */
+.premium-features-container{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:max-content;max-width:95%;display:grid;grid-template-columns:repeat(3,280px);justify-content:center;gap:16px;z-index:46;pointer-events:none;align-items:stretch}
+@media(max-width:900px){.premium-features-container{grid-template-columns:repeat(2,minmax(0,260px));width:calc(100vw - 48px);left:24px;transform:translate(0,-50%)}}
+@media(max-width:560px){.premium-features-container{grid-template-columns:1fr;width:calc(100vw - 32px);left:16px;max-height:75vh;overflow-y:auto;gap:12px}}
+.premium-feature-card{background:rgba(255,255,255,.16);backdrop-filter:blur(80px);-webkit-backdrop-filter:blur(80px);border:1px solid rgba(255,255,255,.15);border-radius:0;padding:24px;width:280px;height:440px;box-shadow:0 30px 60px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;transition:border-color .3s ease;will-change:transform,opacity,filter}
+@media(max-width:900px){.premium-feature-card{width:100%}}
+@media(max-width:560px){.premium-feature-card{height:auto;min-height:200px;padding:20px}}
+.premium-feature-card:hover{border-color:rgba(133,171,139,.5)}
+.premium-feature-icon-wrapper{margin-bottom:clamp(16px,3vw,32px);color:#85AB8B;display:flex;align-items:center;justify-content:center}
+.premium-feature-icon-wrapper svg{width:clamp(32px,3.5vw,48px);height:clamp(32px,3.5vw,48px);opacity:0.95}
+.premium-feature-title{font-family:"Instrument Serif",serif;font-size:clamp(18px,1.8vw,24px);font-weight:400;line-height:1.15;color:#fff;margin:auto 0 8px 0;letter-spacing:-0.01em}
+.premium-feature-desc{font-family:"Manrope",sans-serif;font-size:clamp(11px,1vw,14px);line-height:20px;font-weight:400;color:rgba(255,255,255,.64);margin:0;letter-spacing:0.015em}
+
+/* MISSION */
+.mission-container{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:40;padding:0 clamp(16px,5vw,80px)}
+.mission-inner{position:relative;width:100%;max-width:64rem;height:100%;display:flex;align-items:center;justify-content:center}
+.mission-para{position:absolute;text-align:center;user-select:none;pointer-events:none;font-family:"Instrument Serif",serif;font-size:clamp(1.4rem,4vw,3.75rem);color:rgba(255,255,255,.95);line-height:1.375;letter-spacing:-0.025em;will-change:transform,opacity,filter;padding:0 8px}
+.mission-pill{display:inline-block;padding:2px clamp(8px,2vw,24px);margin:0 clamp(4px,1vw,10px);background:#85AB8B;color:#fff;border-radius:9999px;vertical-align:middle;font-family:"Instrument Serif",serif}
+
+/* FEEDBACK FORM */
+.feedback-container{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:50;padding:0 24px}
+.feedback-form-card{position:relative;width:100%;max-width:28rem;background:rgba(0,0,0,.45);backdrop-filter:blur(48px);-webkit-backdrop-filter:blur(48px);border:1px solid rgba(255,255,255,.1);padding:clamp(28px,5vw,48px);text-align:center;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;user-select:none;will-change:transform,opacity,filter}
+.fb-logo{width:40px;height:33px;margin-bottom:20px}
+.fb-title{font-family:"Instrument Serif",serif;font-size:clamp(1.3rem,3vw,1.875rem);color:#fff;font-weight:400;letter-spacing:-0.025em;margin:0 0 8px 0;line-height:1.2}
+.fb-sub{font-family:"Space Grotesk",sans-serif;font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:0.05em;margin:0 0 28px 0;line-height:1.625;max-width:20rem}
+@media(min-width:768px){.fb-sub{font-size:12px}}
+.fb-form{width:100%;display:flex;flex-direction:column;gap:12px}
+.fb-input{width:100%;padding:clamp(10px,2vw,16px) 20px;background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.1);font-family:"Space Grotesk",sans-serif;font-size:clamp(13px,2vw,16px);letter-spacing:0.025em;text-align:center;outline:none;transition:all .3s ease}
+.fb-input::placeholder{color:rgba(255,255,255,.3)}
+.fb-input:hover,.fb-input:focus{background:rgba(255,255,255,.1)}
+.fb-input:focus{border-color:#85AB8B}
+.fb-btn{width:100%;padding:clamp(12px,2vw,16px) 24px;background:#85AB8B;color:#fff;border:none;cursor:pointer;font-family:"Space Grotesk",sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;transition:all .3s ease;margin-top:2px}
+.fb-btn:hover{background:#6e9674}
+.fb-btn:active{transform:scale(0.98)}
+.fb-btn.submitted{background:#059669;cursor:default}
+.fb-success{margin-top:16px;font-family:"Space Grotesk",sans-serif;font-size:12px;color:#85AB8B;font-weight:500;letter-spacing:0.025em;line-height:1.625;display:none}
+.fb-success.show{display:block;animation:fadeIn .5s ease}
+
+/* VIDEO BG — EXACT from Bloom */
+.bg-wrapper{position:absolute;top:-5%;left:-5%;right:-5%;bottom:-5%;width:110%;height:110%;pointer-events:none;user-select:none;transform:translate3d(0,0,0);transition:transform .4s cubic-bezier(.15,.85,.35,1)}
+.bg-wrapper video{position:absolute;width:0;height:0;opacity:0}
+.bg-wrapper canvas{width:100%;height:100%;display:block}
+
+/* LOADING */
+.loading-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;z-index:60;transition:opacity 1s ease;padding:24px;text-align:center}
+.loading-screen.hidden{opacity:0;pointer-events:none}
+.loading-spinner{width:64px;height:64px;margin-bottom:16px;animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:0.1em;color:#6b7280;text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* FOOTER */
+.site-footer{background:#030703;border-top:1px solid rgba(255,255,255,0.06);padding:40px clamp(16px,5vw,80px) 28px;position:relative;z-index:10}
+.footer-inner{max-width:960px;margin:0 auto}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:24px;margin-bottom:28px}
+.footer-brand-name{font-family:"Instrument Serif",serif;font-size:20px;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.footer-desc{font-family:"Manrope",sans-serif;font-size:12px;color:rgba(255,255,255,.35);max-width:220px;line-height:1.6}
+.footer-col h4{font-family:"Manrope",sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px}
+.footer-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.footer-col a{font-family:"Manrope",sans-serif;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s}
+.footer-col a:hover{color:#85AB8B}
+.footer-socials{display:flex;gap:10px}
+.footer-soc{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s;text-decoration:none}
+.footer-soc:hover{border-color:#85AB8B;background:rgba(133,171,139,.1)}
+.footer-soc svg{width:15px;height:15px;fill:rgba(255,255,255,.5)}
+.footer-soc:hover svg{fill:#85AB8B}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.footer-copy{font-family:"Manrope",sans-serif;font-size:11px;color:rgba(255,255,255,.25)}
+.footer-tag{font-family:"Instrument Serif",serif;font-size:12px;color:rgba(133,171,139,.5);font-style:italic}
+
+/* TG FLOAT */
+.tg-float{position:fixed;bottom:24px;right:24px;z-index:200;width:52px;height:52px;border-radius:50%;background:#2AABEE;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(42,171,238,.4);transition:transform .2s;text-decoration:none}
+.tg-float:hover{transform:scale(1.1)}
+.tg-float svg{width:26px;height:26px;fill:#fff}
+
+/* MOBILE: video autoplays & loops directly (real motion) */
+@media(max-width:768px){
+  .bg-wrapper{z-index:0!important}
+  .bg-wrapper #v1{position:absolute!important;top:0;left:0;width:100%!important;height:100%!important;object-fit:cover;opacity:1!important;display:block!important;visibility:visible!important}
+  .bg-wrapper #v2,.bg-wrapper #v3{display:none!important}
+  .bg-wrapper canvas{display:none!important}
+}
+
+/* ═══ MOBILE LAYOUT — reliable scrolling sections ═══ */
+.mobile-layout{display:none}
+@media(max-width:768px){
+  /* Hide the entire desktop scroll engine on mobile */
+  .scroll-container{display:none!important}
+  .mobile-layout{display:block}
+  body{overflow-x:hidden}
+}
+/* Mobile fixed video background */
+.m-bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;overflow:hidden;background:linear-gradient(135deg,#0a150a,#1a2d18 40%,#2a3d28 70%,#0d1a0c)}
+.m-bg video{width:100%;height:100%;object-fit:cover;opacity:0.5}
+.m-bg-overlay{position:fixed;inset:0;z-index:0;background:rgba(0,0,0,0.5)}
+/* Mobile nav */
+.m-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
+.m-logo{font-family:"Instrument Serif",serif;font-size:20px;color:#fff;display:flex;align-items:center;gap:6px}
+.m-logo svg{width:26px;height:22px}
+.m-nav-right{display:flex;align-items:center;gap:10px}
+.m-lang{background:rgba(133,171,139,.15);border:1px solid rgba(133,171,139,.35);color:#85AB8B;font-family:"Manrope",sans-serif;font-size:12px;font-weight:700;cursor:pointer;padding:7px 14px;border-radius:6px;letter-spacing:.05em}
+.m-ham{width:38px;height:38px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:0}
+.m-ham span{display:block;width:17px;height:1.5px;background:#fff;border-radius:2px;transition:transform .3s,opacity .2s}
+.m-ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.m-ham.open span:nth-child(2){opacity:0}
+.m-ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.m-menu{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.95);backdrop-filter:blur(30px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.m-menu.open{opacity:1;visibility:visible}
+.m-menu a{font-family:"Instrument Serif",serif;font-size:36px;color:#fff;text-decoration:none;padding:10px 24px}
+.m-menu a:active{color:#85AB8B}
+/* Mobile sections */
+.m-section{position:relative;z-index:1;padding:90px 24px 60px;min-height:auto}
+.m-fade{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.m-fade.in{opacity:1;transform:translateY(0)}
+.m-label{font-family:"Manrope",sans-serif;font-size:11px;font-weight:700;color:#85AB8B;text-transform:uppercase;letter-spacing:.12em;margin-bottom:12px}
+.m-h1{font-family:"Instrument Serif",serif;font-size:clamp(36px,11vw,52px);line-height:1.05;font-weight:400;color:#fff;margin:0 0 16px;letter-spacing:-.02em}
+.m-h1 em{font-style:italic;color:#85AB8B}
+.m-h2{font-family:"Instrument Serif",serif;font-size:clamp(28px,8vw,38px);line-height:1.1;font-weight:400;color:#fff;margin:0 0 20px;letter-spacing:-.02em}
+.m-h2 em{font-style:italic;color:#85AB8B}
+.m-sub{font-family:"Manrope",sans-serif;font-size:14px;line-height:1.65;color:rgba(255,255,255,.7);margin:0 0 28px;max-width:340px}
+.m-p{font-family:"Manrope",sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,.65);margin:0 0 16px}
+.m-btn{display:inline-flex;align-items:center;gap:10px;background:#85AB8B;color:#fff;font-family:"Manrope",sans-serif;font-size:13px;font-weight:700;text-decoration:none;padding:14px 26px;border-radius:30px}
+.m-btn svg{width:18px;height:11px;stroke:#fff;stroke-width:2;fill:none}
+.m-hero-min{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.m-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
+.m-stat{text-align:center;background:rgba(133,171,139,.08);border:1px solid rgba(133,171,139,.18);padding:18px 8px}
+.m-stat b{font-family:"Instrument Serif",serif;font-size:30px;color:#85AB8B;font-weight:400;display:block}
+.m-stat span{font-family:"Manrope",sans-serif;font-size:10px;color:rgba(255,255,255,.55);line-height:1.3}
+.m-cards{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.m-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(10px);padding:24px}
+.m-card-ic{color:#85AB8B;margin-bottom:14px}
+.m-card-ic svg{width:34px;height:34px}
+.m-card h3{font-family:"Instrument Serif",serif;font-size:21px;color:#fff;margin:0 0 8px;font-weight:400}
+.m-card p{font-family:"Manrope",sans-serif;font-size:13px;line-height:1.6;color:rgba(255,255,255,.6);margin:0}
+.m-mission-item{margin-bottom:36px}
+.m-mission-item .num{font-family:"JetBrains Mono",monospace;font-size:12px;color:#85AB8B;letter-spacing:.1em;margin-bottom:8px}
+.m-mission-item p{font-family:"Instrument Serif",serif;font-size:clamp(22px,6vw,28px);color:#fff;line-height:1.35;margin:0}
+.m-mission-item .pill{display:inline-block;background:#85AB8B;color:#fff;padding:0 12px;border-radius:9999px}
+.m-form{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.m-input{width:100%;padding:14px 18px;background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.14);font-family:"Space Grotesk",sans-serif;font-size:15px;text-align:center;outline:none}
+.m-input::placeholder{color:rgba(255,255,255,.35)}
+.m-input:focus{border-color:#85AB8B}
+.m-submit{width:100%;padding:15px;background:#85AB8B;color:#fff;border:none;font-family:"Space Grotesk",sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:pointer}
+.m-submit.done{background:#059669}
+.m-ok{font-family:"Space Grotesk",sans-serif;font-size:12px;color:#85AB8B;text-align:center;margin-top:12px;display:none}
+.m-ok.show{display:block}
+.m-info{margin-top:32px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:14px}
+.m-info-row{display:flex;align-items:center;gap:12px;font-family:"Manrope",sans-serif;font-size:14px;color:rgba(255,255,255,.65)}
+.m-info-row svg{width:18px;height:18px;fill:none;stroke:#85AB8B;stroke-width:1.5}
+.m-info-row a{color:rgba(255,255,255,.65);text-decoration:none}
+</style>
+</head>
+<body>
+<!-- ═══ MOBILE LAYOUT ═══ -->
+<div class="mobile-layout">
+  <div class="m-bg">
+    <video id="mVideo" autoplay muted loop playsinline webkit-playsinline preload="auto"
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4"></video>
+  </div>
+  <div class="m-bg-overlay"></div>
+
+  <nav class="m-nav">
+    <div class="m-logo">
+      <svg viewBox="0 0 56 48" fill="none"><text x="0" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="white">F</text><text x="24" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="#85AB8B">Z</text></svg>
+      FZ Digital
+    </div>
+    <div class="m-nav-right">
+      <button class="m-lang" id="mLang">RU</button>
+      <button class="m-ham" id="mHam"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="m-menu" id="mMenu">
+    <a href="#m-about" class="m-mlink" id="mm1">Biz haqimizda</a>
+    <a href="#m-services" class="m-mlink" id="mm2">Xizmatlar</a>
+    <a href="#m-contact" class="m-mlink" id="mm3">Bog'lanish</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="m-section m-hero-min">
+    <div class="m-fade">
+      <div class="m-label" id="mHeroBadge">Raqamli marketing</div>
+      <h1 class="m-h1" id="mHeroTitle">Sizning <em>biznesingiz</em> uchun raqamli kuch.</h1>
+      <p class="m-sub" id="mHeroSub">Sizning biznesingiz uchun ijtimoiy tarmoqlar strategiyasi, zamonaviy veb-saytlar va avtomatlashtirish yechimlari.</p>
+      <a href="https://t.me/+998500211985" target="_blank" rel="noopener" class="m-btn">
+        <span id="mHeroBtn">Biz bilan bog'laning — bu bepul</span>
+        <svg viewBox="0 0 40 24"><path stroke-linecap="round" stroke-linejoin="round" d="M29.5 4.5L37 12m0 0l-7.5 7.5M37 12H3"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="m-section" id="m-about">
+    <div class="m-fade">
+      <div class="m-label" id="mAboutLabel">Biz haqimizda</div>
+      <h2 class="m-h2" id="mAboutTitle">Raqamli olamda <em>brendingizni</em> rivojlantiring</h2>
+      <p class="m-p" id="mAboutP1">FZ Digital — to'liq xizmat ko'rsatuvchi raqamli marketing agentligi. Biz samarali marketing strategiyalari, zamonaviy veb-saytlar va avtomatlashtirish yechimlari yaratamiz.</p>
+      <p class="m-p" id="mAboutP2">Bizning maqsadimiz — har bir mijozning onlayn mavjudligini haqiqiy biznes o'sishiga aylantirish.</p>
+      <div class="m-stats">
+        <div class="m-stat"><b>50+</b><span id="mStat1">Mamnun mijozlar</span></div>
+        <div class="m-stat"><b>3+</b><span id="mStat2">Yillik tajriba</span></div>
+        <div class="m-stat"><b>100+</b><span id="mStat3">Loyihalar</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="m-section" id="m-services">
+    <div class="m-fade">
+      <div class="m-label" id="mServLabel">Xizmatlar</div>
+      <h2 class="m-h2" id="mServTitle">Bizning <em>xizmatlarimiz</em></h2>
+      <div class="m-cards">
+        <div class="m-card"><div class="m-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="19" r="2.5"/><line x1="7.5" y1="10.8" x2="16.5" y2="6.2" stroke-linecap="round"/><line x1="7.5" y1="13.2" x2="16.5" y2="17.8" stroke-linecap="round"/></svg></div><h3 id="mс1t">Ijtimoiy tarmoqlar</h3><p id="ms1d">Organik strategiya, kontent yaratish va doimiy faollik orqali brendingizni rivojlantiring.</p></div>
+        <div class="m-card"><div class="m-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="9" x2="22" y2="9"/><circle cx="5.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="8.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/></svg></div><h3 id="ms2t">Veb-sayt yaratish</h3><p id="ms2d">Tez, responsiv va zamonaviy veb-saytlar — marketing va lead generatsiyani qo'llab-quvvatlovchi.</p></div>
+        <div class="m-card"><div class="m-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="14" r="1.5"/><circle cx="15" cy="14" r="1.5"/><path d="M9 8V6a3 3 0 016 0v2" stroke-linecap="round"/></svg></div><h3 id="ms3t">Bot yaratish</h3><p id="ms3d">Telegram uchun maxsus chatbotlar — mijozlarga xizmat ko'rsatish va avtomatlashtirish.</p></div>
+        <div class="m-card"><div class="m-card-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 12h8M8 16h5" stroke-linecap="round"/><circle cx="6" cy="8" r="1.5"/></svg></div><h3 id="ms4t">Raqamli vizitka</h3><p id="ms4d">Zamonaviy raqamli vizit kartalar — profillaringizga bir zumda ulanish.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="m-section">
+    <div class="m-fade">
+      <div class="m-label" id="mMissLabel">Missiyamiz</div>
+      <div class="m-mission-item"><div class="num">01</div><p id="mMis1">Har bir biznesni <span class="pill">raqamli olamda</span> kuchli qilish.</p></div>
+      <div class="m-mission-item"><div class="num">02</div><p id="mMis2">Ijtimoiy tarmoqlar orqali <span class="pill">brendingizni</span> yuksaltirish.</p></div>
+      <div class="m-mission-item"><div class="num">03</div><p id="mMis3">Sizning <span class="pill">raqamli hamkor</span>ingiz bo'lish.</p></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="m-section" id="m-contact">
+    <div class="m-fade">
+      <div class="m-label" id="mContLabel">Bog'lanish</div>
+      <h2 class="m-h2" id="mContTitle">Biz bilan <em>bog'laning</em></h2>
+      <form class="m-form" id="mForm">
+        <input type="text" required class="m-input" id="mName" placeholder="Ismingiz">
+        <input type="email" required class="m-input" id="mEmail" placeholder="Email manzilingiz">
+        <button type="submit" class="m-submit" id="mSubmit">YO'LLANG</button>
+      </form>
+      <p class="m-ok" id="mOk">Rahmat! Tez orada siz bilan bog'lanamiz.</p>
+      <div class="m-info">
+        <div class="m-info-row"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 010 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg><a href="tel:+998500211985">+998 50 021 19 85</a></div>
+        <div class="m-info-row"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:info@fzdigital.uz">info@fzdigital.uz</a></div>
+        <div class="m-info-row"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg><a href="https://t.me/+998500211985" target="_blank">Telegram</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile footer -->
+  <footer class="m-section" style="padding-bottom:90px;border-top:1px solid rgba(255,255,255,.08)">
+    <div class="m-logo" style="margin-bottom:12px">
+      <svg viewBox="0 0 56 48" fill="none"><text x="0" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="white">F</text><text x="24" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="#85AB8B">Z</text></svg>
+      FZ Digital
+    </div>
+    <p style="font-family:Manrope,sans-serif;font-size:12px;color:rgba(255,255,255,.4);margin:0" id="mFootCopy">© 2026 FZ Digital. Barcha huquqlar himoyalangan.</p>
+  </footer>
+</div>
+
+
+<div class="scroll-container" id="scrollContainer">
+<div class="fixed-viewport">
+
+  <!-- Brand -->
+  <div class="premium-brand-header" id="brandHeader">
+    <svg viewBox="0 0 56 48" fill="none" class="premium-brand-logo-svg">
+      <text x="0" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="white">F</text>
+      <text x="24" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="#85AB8B">Z</text>
+    </svg>
+    <span class="premium-brand-text">FZ Digital</span>
+  </div>
+
+  <!-- Nav -->
+  <header class="premium-header-nav" id="navHeader">
+    <button class="lang-btn lang-btn-desktop" id="langBtnDesktop">RU</button>
+    <nav class="premium-nav-desktop">
+      <ul class="premium-nav-list">
+        <li class="premium-nav-item"><a href="#" class="premium-nav-link" id="nav1" onclick="goTo(0.2);return false">Biz haqimizda</a></li>
+        <li class="premium-nav-item"><a href="#" class="premium-nav-link" id="nav2" onclick="goTo(0.45);return false">Xizmatlar</a></li>
+        <li class="premium-nav-item"><a href="#" class="premium-nav-link" id="nav3" onclick="goTo(0.97);return false">Bog'lanish</a></li>
+      </ul>
+    </nav>
+    <button class="premium-hamburger" id="hamburgerBtn" aria-label="Open menu">
+      <span class="premium-hamburger-line" id="hLine1"></span>
+      <span class="premium-hamburger-line" id="hLine2"></span>
+      <span class="premium-hamburger-line" id="hLine3"></span>
+    </button>
+  </header>
+
+  <!-- Mobile menu -->
+  <div class="premium-mobile-menu" id="mobileMenu">
+    <ul class="premium-mobile-menu-list">
+      <li><a href="#" class="premium-mobile-menu-link mobile-link" id="mnav1" onclick="goTo(0.2);closeMob();return false">Biz haqimizda</a></li>
+      <li><a href="#" class="premium-mobile-menu-link mobile-link" id="mnav2" onclick="goTo(0.45);closeMob();return false">Xizmatlar</a></li>
+      <li><a href="#" class="premium-mobile-menu-link mobile-link" id="mnav3" onclick="goTo(0.97);closeMob();return false">Bog'lanish</a></li>
+    </ul>
+    <button class="mob-lang-btn" id="langBtnMobile">RU — Русский</button>
+  </div>
+
+  <!-- Hero card -->
+  <div class="premium-botanical-card" id="botanicalCard">
+    <h2 class="premium-card-title" id="heroTitle">Sizning <em>biznesingiz</em><br>uchun raqamli kuch.</h2>
+    <p class="premium-card-subtext" id="heroSub">Sizning biznesingiz uchun ijtimoiy tarmoqlar strategiyasi, zamonaviy veb-saytlar va avtomatlashtirish yechimlari.</p>
+    <a href="https://t.me/+998500211985" target="_blank" rel="noopener" class="premium-action-circle" aria-label="Telegram">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 40 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M29.5 4.5L37 12m0 0l-7.5 7.5M37 12H3"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- Feature cards -->
+  <div class="premium-features-container" id="featuresContainer" style="visibility:hidden">
+    <div class="premium-feature-card" id="fCard1" style="opacity:0">
+      <div class="premium-feature-icon-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="19" r="2.5"/>
+          <line x1="7.5" y1="10.8" x2="16.5" y2="6.2" stroke-linecap="round"/>
+          <line x1="7.5" y1="13.2" x2="16.5" y2="17.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3 class="premium-feature-title" id="f1title">Ijtimoiy tarmoqlar</h3>
+      <p class="premium-feature-desc" id="f1desc">Organik strategiya, kontent yaratish va doimiy faollik orqali brendingizni rivojlantiring.</p>
+    </div>
+    <div class="premium-feature-card" id="fCard2" style="opacity:0">
+      <div class="premium-feature-icon-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <line x1="2" y1="9" x2="22" y2="9"/>
+          <circle cx="5.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+          <circle cx="8.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"/>
+        </svg>
+      </div>
+      <h3 class="premium-feature-title" id="f2title">Veb-sayt yaratish</h3>
+      <p class="premium-feature-desc" id="f2desc">Tez, responsiv va zamonaviy veb-saytlar — marketing va lead generatsiyani qo'llab-quvvatlovchi.</p>
+    </div>
+    <div class="premium-feature-card" id="fCard3" style="opacity:0">
+      <div class="premium-feature-icon-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="8" width="16" height="12" rx="2"/>
+          <circle cx="9" cy="14" r="1.5"/><circle cx="15" cy="14" r="1.5"/>
+          <path d="M9 8V6a3 3 0 016 0v2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3 class="premium-feature-title" id="f3title">Bot yaratish</h3>
+      <p class="premium-feature-desc" id="f3desc">Telegram uchun maxsus chatbotlar — mijozlarga xizmat ko'rsatish va jarayonlarni avtomatlashtirish.</p>
+    </div>
+  </div>
+
+  <!-- Mission -->
+  <div class="mission-container" id="missionContainer" style="visibility:hidden">
+    <div class="mission-inner">
+      <div class="mission-para" id="mPara1" style="opacity:0">Har bir biznesni <span class="mission-pill">raqamli olamda</span> kuchli va ko'rinadigan qilishga intilamiz.</div>
+      <div class="mission-para" id="mPara2" style="opacity:0">Ijtimoiy tarmoqlar orqali <span class="mission-pill">brendingizni</span> yangi bosqichga ko'taramiz.</div>
+      <div class="mission-para" id="mPara3" style="opacity:0">Biz shunchaki xizmat emas — sizning <span class="mission-pill">raqamli hamkor</span>ingizmiz.</div>
+    </div>
+  </div>
+
+  <!-- Contact form -->
+  <div class="feedback-container" id="feedbackContainer" style="visibility:hidden">
+    <div class="feedback-form-card" id="feedbackForm" style="opacity:0">
+      <svg viewBox="0 0 56 48" fill="none" class="fb-logo">
+        <text x="0" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="white">F</text>
+        <text x="24" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="#85AB8B">Z</text>
+      </svg>
+      <h3 class="fb-title" id="formTitle">Hamkorlik boshlaylik</h3>
+      <p class="fb-sub" id="formSub">Bepul maslahat uchun ma'lumotlaringizni qoldiring.</p>
+      <form class="fb-form" id="fbForm">
+        <input type="text" required placeholder="Ismingiz" class="fb-input" id="fbName">
+        <input type="email" required placeholder="Email manzilingiz" class="fb-input" id="fbEmail">
+        <button type="submit" class="fb-btn" id="fbBtn">YO'LLANG</button>
+      </form>
+      <p class="fb-success" id="fbSuccess">Rahmat! Tez orada siz bilan bog'lanamiz.</p>
+    </div>
+  </div>
+
+  <!-- VIDEO BG — EXACT Bloom structure -->
+  <div class="bg-wrapper" id="bgWrapper">
+    <video id="v1" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4" preload="auto" autoplay muted loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+    <video id="v2" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
+    <video id="v3" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
+    <canvas id="mainCanvas"></canvas>
+  </div>
+
+  <!-- Loading — EXACT Bloom -->
+  <div class="loading-screen" id="loadingScreen">
+    <svg class="loading-spinner" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+      <circle cx="32" cy="32" r="28" stroke="#1f2937" stroke-width="2" fill="transparent"/>
+      <circle cx="32" cy="32" r="28" stroke="#85AB8B" stroke-width="3" fill="transparent" stroke-dasharray="176" stroke-dashoffset="132" stroke-linecap="round"/>
+    </svg>
+    <p class="loading-text">Loading experience</p>
+  </div>
+
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">
+          <svg width="24" height="20" viewBox="0 0 56 48" fill="none"><text x="0" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="white">F</text><text x="24" y="40" font-family="Georgia,serif" font-size="44" font-weight="700" fill="#85AB8B">Z</text></svg>
+          FZ Digital
+        </div>
+        <p class="footer-desc" id="fDesc">Sizning ishonchli raqamli hamkoringiz.</p>
+      </div>
+      <div class="footer-col">
+        <h4 id="fLinkH">Xizmatlar</h4>
+        <ul>
+          <li><a href="#" onclick="goTo(0.45);return false" id="fl1">Ijtimoiy tarmoqlar</a></li>
+          <li><a href="#" onclick="goTo(0.45);return false" id="fl2">Veb-sayt yaratish</a></li>
+          <li><a href="#" onclick="goTo(0.45);return false" id="fl3">Bot yaratish</a></li>
+          <li><a href="#" onclick="goTo(0.45);return false" id="fl4">Raqamli vizitka</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 id="fContH">Aloqa</h4>
+        <ul>
+          <li><a href="tel:+998500211985">+998 50 021 19 85</a></li>
+          <li><a href="mailto:info@fzdigital.uz">info@fzdigital.uz</a></li>
+          <li><a href="https://t.me/+998500211985" target="_blank">Telegram</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-family:Manrope,sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px" id="fSocH">Ijtimoiy</h4>
+        <div class="footer-socials">
+          <a href="https://instagram.com" class="footer-soc" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+          <a href="https://t.me/+998500211985" class="footer-soc" target="_blank"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+          <a href="https://facebook.com" class="footer-soc" target="_blank"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy" id="fCopy">© 2026 FZ Digital. Barcha huquqlar himoyalangan.</span>
+      <span class="footer-tag" id="fTag">Sizning ishonchli raqamli hamkoringiz</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Telegram float -->
+<a href="https://t.me/+998500211985" class="tg-float" target="_blank" rel="noopener" aria-label="Telegram">
+  <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+</a>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   EXACT BLOOM JS ENGINE — only content changed
+═══════════════════════════════════════════════════ */
+(function(){
+
+var IS_MOBILE = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 769;
+
+/* ── TRANSLATIONS ─────────────────────────── */
+var T={
+uz:{
+  langD:"RU",langM:"RU \u2014 \u0420\u0443\u0441\u0441\u043a\u0438\u0439",
+  nav1:"Biz haqimizda",nav2:"Xizmatlar",nav3:"Bog\u2019lanish",
+  heroTitle:"Sizning <em>biznesingiz</em><br>uchun raqamli kuch.",
+  heroSub:"Sizning biznesingiz uchun ijtimoiy tarmoqlar strategiyasi, zamonaviy veb-saytlar va avtomatlashtirish yechimlari.",
+  f1t:"Ijtimoiy tarmoqlar",f1d:"Organik strategiya, kontent yaratish va doimiy faollik orqali brendingizni rivojlantiring.",
+  f2t:"Veb-sayt yaratish",f2d:"Tez, responsiv va zamonaviy veb-saytlar \u2014 marketing va lead generatsiyani qo\u2018llab-quvvatlovchi.",
+  f3t:"Bot yaratish",f3d:"Telegram uchun maxsus chatbotlar \u2014 mijozlarga xizmat ko\u2018rsatish va avtomatlashtirish.",
+  m1:"Har bir biznesni <span class='mission-pill'>raqamli olamda</span> kuchli va ko\u2018rinadigan qilishga intilamiz.",
+  m2:"Ijtimoiy tarmoqlar orqali <span class='mission-pill'>brendingizni</span> yangi bosqichga ko\u2018taramiz.",
+  m3:"Biz shunchaki xizmat emas \u2014 sizning <span class='mission-pill'>raqamli hamkor</span>ingizmiz.",
+  fTitle:"Hamkorlik boshlaylik",fSub:"Bepul maslahat uchun ma\u2019lumotlaringizni qoldiring.",
+  namePh:"Ismingiz",emailPh:"Email manzilingiz",fBtn:"YO\u02BBLLANG",fOk:"Rahmat! Tez orada siz bilan bog\u02BBlanamiz.",
+  fDesc:"Sizning ishonchli raqamli hamkoringiz.",
+  fLinkH:"Xizmatlar",fl1:"Ijtimoiy tarmoqlar",fl2:"Veb-sayt yaratish",fl3:"Bot yaratish",fl4:"Raqamli vizitka",
+  fContH:"Aloqa",fSocH:"Ijtimoiy",
+  fCopy:"\u00A9 2026 FZ Digital. Barcha huquqlar himoyalangan.",fTag:"Sizning ishonchli raqamli hamkoringiz"
+},
+ru:{
+  langD:"O\u02BBZ",langM:"O\u02BBZ \u2014 O\u02BBzbek",
+  nav1:"\u041e \u043d\u0430\u0441",nav2:"\u0423\u0441\u043b\u0443\u0433\u0438",nav3:"\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b",
+  heroTitle:"\u0426\u0438\u0444\u0440\u043e\u0432\u0430\u044f \u0441\u0438\u043b\u0430 <em>\u0434\u043b\u044f</em><br>\u0432\u0430\u0448\u0435\u0433\u043e \u0431\u0438\u0437\u043d\u0435\u0441\u0430.",
+  heroSub:"\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0441\u043e\u0446\u0441\u0435\u0442\u0435\u0439, \u0441\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435 \u0441\u0430\u0439\u0442\u044b \u0438 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u0434\u043b\u044f \u0432\u0430\u0448\u0435\u0433\u043e \u0431\u0438\u0437\u043d\u0435\u0441\u0430.",
+  f1t:"\u0421\u043e\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u0435\u0442\u0438",f1d:"\u041e\u0440\u0433\u0430\u043d\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0438 \u043f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u0430\u044f \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c.",
+  f2t:"\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0441\u0430\u0439\u0442\u043e\u0432",f2d:"\u0411\u044b\u0441\u0442\u0440\u044b\u0435 \u0430\u0434\u0430\u043f\u0442\u0438\u0432\u043d\u044b\u0435 \u0441\u0430\u0439\u0442\u044b \u2014 \u0434\u043b\u044f \u043c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433\u0430.",
+  f3t:"\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0431\u043e\u0442\u043e\u0432",f3d:"\u0427\u0430\u0442-\u0431\u043e\u0442\u044b \u0434\u043b\u044f Telegram \u2014 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f.",
+  m1:"\u041c\u044b \u0434\u0435\u043b\u0430\u0435\u043c \u043a\u0430\u0436\u0434\u044b\u0439 \u0431\u0438\u0437\u043d\u0435\u0441 <span class='mission-pill'>\u0432\u0438\u0434\u0438\u043c\u044b\u043c</span> \u0432 \u0446\u0438\u0444\u0440\u043e\u0432\u043e\u043c \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u0435.",
+  m2:"\u0427\u0435\u0440\u0435\u0437 \u0441\u043e\u0446\u0441\u0435\u0442\u0438 \u043c\u044b \u0432\u044b\u0432\u043e\u0434\u0438\u043c \u0432\u0430\u0448 <span class='mission-pill'>\u0431\u0440\u0435\u043d\u0434</span> \u043d\u0430 \u043d\u043e\u0432\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c.",
+  m3:"\u041c\u044b \u043d\u0435 \u043f\u0440\u043e\u0441\u0442\u043e \u0443\u0441\u043b\u0443\u0433\u0430 \u2014 \u0432\u0430\u0448 <span class='mission-pill'>\u0446\u0438\u0444\u0440\u043e\u0432\u043e\u0439 \u043f\u0430\u0440\u0442\u043d\u0451\u0440</span>.",
+  fTitle:"\u041d\u0430\u0447\u043d\u0451\u043c \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u0447\u0435\u0441\u0442\u0432\u043e",fSub:"\u041e\u0441\u0442\u0430\u0432\u044c\u0442\u0435 \u043a\u043e\u043d\u0442\u0430\u043a\u0442\u044b \u0434\u043b\u044f \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e\u0439 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u0438.",
+  namePh:"\u0412\u0430\u0448\u0435 \u0438\u043c\u044f",emailPh:"\u0412\u0430\u0448 email",fBtn:"\u041e\u0422\u041f\u0420\u0410\u0412\u0418\u0422\u042c",fOk:"\u0421\u043f\u0430\u0441\u0438\u0431\u043e! \u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0432 \u0431\u043b\u0438\u0436\u0430\u0439\u0448\u0435\u0435 \u0432\u0440\u0435\u043c\u044f.",
+  fDesc:"\u0412\u0430\u0448 \u043d\u0430\u0434\u0451\u0436\u043d\u044b\u0439 \u0446\u0438\u0444\u0440\u043e\u0432\u043e\u0439 \u043f\u0430\u0440\u0442\u043d\u0451\u0440.",
+  fLinkH:"\u0423\u0441\u043b\u0443\u0433\u0438",fl1:"\u0421\u043e\u0446\u0441\u0435\u0442\u0438",fl2:"\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0441\u0430\u0439\u0442\u043e\u0432",fl3:"\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0431\u043e\u0442\u043e\u0432",fl4:"\u0426\u0438\u0444\u0440\u043e\u0432\u044b\u0435 \u0432\u0438\u0437\u0438\u0442\u043a\u0438",
+  fContH:"\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b",fSocH:"\u0421\u043e\u0446\u0441\u0435\u0442\u0438",
+  fCopy:"\u00A9 2026 FZ Digital. \u0412\u0441\u0435 \u043f\u0440\u0430\u0432\u0430 \u0437\u0430\u0449\u0438\u0449\u0435\u043d\u044b.",fTag:"\u0412\u0430\u0448 \u043d\u0430\u0434\u0451\u0436\u043d\u044b\u0439 \u0446\u0438\u0444\u0440\u043e\u0432\u043e\u0439 \u043f\u0430\u0440\u0442\u043d\u0451\u0440"
+}};
+
+var lang='uz';
+function g(id){return document.getElementById(id);}
+function st(id,v){var e=g(id);if(e)e.textContent=v;}
+function sh(id,v){var e=g(id);if(e)e.innerHTML=v;}
+
+function setLang(l){
+  lang=l;var d=T[l];
+  document.documentElement.lang=l;
+  st('langBtnDesktop',d.langD);st('langBtnMobile',d.langM);
+  st('nav1',d.nav1);st('nav2',d.nav2);st('nav3',d.nav3);
+  st('mnav1',d.nav1);st('mnav2',d.nav2);st('mnav3',d.nav3);
+  sh('heroTitle',d.heroTitle);st('heroSub',d.heroSub);
+  st('f1title',d.f1t);st('f1desc',d.f1d);
+  st('f2title',d.f2t);st('f2desc',d.f2d);
+  st('f3title',d.f3t);st('f3desc',d.f3d);
+  sh('mPara1',d.m1);sh('mPara2',d.m2);sh('mPara3',d.m3);
+  st('formTitle',d.fTitle);st('formSub',d.fSub);
+  var fb=g('fbBtn');if(fb&&!fb.classList.contains('submitted'))fb.textContent=d.fBtn;
+  st('fbSuccess',d.fOk);
+  g('fbName')&&(g('fbName').placeholder=d.namePh);
+  g('fbEmail')&&(g('fbEmail').placeholder=d.emailPh);
+  st('fDesc',d.fDesc);st('fLinkH',d.fLinkH);
+  st('fl1',d.fl1);st('fl2',d.fl2);st('fl3',d.fl3);st('fl4',d.fl4);
+  st('fContH',d.fContH);st('fSocH',d.fSocH);
+  st('fCopy',d.fCopy);st('fTag',d.fTag);
+}
+function toggleLang(){setLang(lang==='uz'?'ru':'uz');}
+g('langBtnDesktop').addEventListener('click',toggleLang);
+g('langBtnMobile').addEventListener('click',function(){toggleLang();closeMob();});
+
+/* ── SCROLL HELPER ────────────────────────── */
+window.goTo=function(f){
+  var sc=g('scrollContainer');if(!sc)return;
+  window.scrollTo({top:(sc.scrollHeight-window.innerHeight)*f,behavior:'smooth'});
+};
+
+/* ════════════════════════════════════════════
+   EXACT BLOOM VIDEO ENGINE — unchanged
+════════════════════════════════════════════ */
+var container = document.getElementById('scrollContainer');
+var videos = { v1: document.getElementById('v1'), v2: document.getElementById('v2'), v3: document.getElementById('v3') };
+var canvas = document.getElementById('mainCanvas');
+var bgWrapper = document.getElementById('bgWrapper');
+var brandHeader = document.getElementById('brandHeader');
+var navHeader = document.getElementById('navHeader');
+var botanicalCard = document.getElementById('botanicalCard');
+var featuresContainer = document.getElementById('featuresContainer');
+var fCard1 = document.getElementById('fCard1');
+var fCard2 = document.getElementById('fCard2');
+var fCard3 = document.getElementById('fCard3');
+var missionContainer = document.getElementById('missionContainer');
+var mPara1 = document.getElementById('mPara1');
+var mPara2 = document.getElementById('mPara2');
+var mPara3 = document.getElementById('mPara3');
+var feedbackContainer = document.getElementById('feedbackContainer');
+var feedbackForm = document.getElementById('feedbackForm');
+var loadingScreen = document.getElementById('loadingScreen');
+
+var targetProgress = 0, currentProgress = 0;
+var durations = { v1: 0, v2: 0, v3: 0 };
+var metaLoaded = { v1: false, v2: false, v3: false };
+var seeking = { v1: false, v2: false, v3: false };
+var pendingSeek = { v1: -1, v2: -1, v3: -1 };
+var offscreen = null;
+
+function getActiveKey(p) { return p <= 0.333 ? 'v1' : p <= 0.666 ? 'v2' : 'v3'; }
+
+function drawFrame() {
+  var p = currentProgress;
+  var key = getActiveKey(p);
+  var video = videos[key];
+  if (!video || video.readyState < 2) return;
+  if (seeking[key]) return;
+  var dpr = window.devicePixelRatio || 1;
+  var cW = canvas.width / dpr, cH = canvas.height / dpr;
+  if (cW === 0 || cH === 0) return;
+  var vW = video.videoWidth || 1920, vH = video.videoHeight || 1080;
+  var vA = vW / vH, cA = cW / cH;
+  var dW = cW, dH = cH, oX = 0, oY = 0;
+  if (vA > cA) { dW = cH * vA; oX = (cW - dW) / 2; }
+  else { dH = cW / vA; oY = (cH - dH) / 2; }
+  if (!offscreen) offscreen = document.createElement('canvas');
+  if (offscreen.width !== canvas.width || offscreen.height !== canvas.height) {
+    offscreen.width = canvas.width; offscreen.height = canvas.height;
+  }
+  var oc = offscreen.getContext('2d');
+  if (!oc) return;
+  try {
+    oc.setTransform(dpr, 0, 0, dpr, 0, 0);
+    oc.clearRect(0, 0, cW, cH);
+    oc.drawImage(video, oX, oY, dW, dH);
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(offscreen, 0, 0);
+  } catch(e) {}
+}
+
+function handleResize() {
+  var parent = canvas.parentElement;
+  if (!parent) return;
+  var dpr = window.devicePixelRatio || 1;
+  var w = parent.clientWidth, h = parent.clientHeight;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  if (offscreen) { offscreen.width = canvas.width; offscreen.height = canvas.height; }
+  drawFrame();
+}
+
+function safeSeek(key, targetTime) {
+  var video = videos[key];
+  if (!video) return;
+  var dur = durations[key] || video.duration || 10;
+  var clamped = Math.max(0, Math.min(targetTime, dur - 0.05));
+  if (Math.abs(video.currentTime - clamped) < 0.04) return;
+  if (seeking[key]) { pendingSeek[key] = clamped; return; }
+  seeking[key] = true; pendingSeek[key] = -1;
+  video.currentTime = clamped;
+}
+
+['v1','v2','v3'].forEach(function(key) {
+  videos[key].addEventListener('seeked', function() {
+    seeking[key] = false;
+    if (key === getActiveKey(currentProgress)) drawFrame();
+    if (pendingSeek[key] >= 0) { var t = pendingSeek[key]; pendingSeek[key] = -1; safeSeek(key, t); }
+  });
+});
+
+function checkAllReady() {
+  if (metaLoaded.v1 && metaLoaded.v2 && metaLoaded.v3) {
+    setTimeout(function() { loadingScreen.classList.add('hidden'); handleResize(); }, 100);
+  }
+}
+['v1','v2','v3'].forEach(function(key) {
+  var el = videos[key];
+  function onMeta() {
+    var d = el.duration;
+    if (d && !isNaN(d) && d > 0 && d !== Infinity) { durations[key] = d; metaLoaded[key] = true; checkAllReady(); }
+  }
+  el.addEventListener('loadedmetadata', onMeta);
+  el.addEventListener('durationchange', onMeta);
+  el.addEventListener('canplay', onMeta);
+  el.addEventListener('error', function() { loadingScreen.classList.add('hidden'); });
+  if (el.readyState >= 1) onMeta();
+});
+setTimeout(function() {
+  ['v1','v2','v3'].forEach(function(key) {
+    if (!metaLoaded[key]) { durations[key] = videos[key].duration || 10; metaLoaded[key] = true; }
+  });
+  checkAllReady();
+}, 8000);
+
+window.addEventListener('resize', handleResize);
+
+window.addEventListener('mousemove', function(e) {
+  var x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+  var y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+  bgWrapper.style.transform = 'translate3d(' + (x * -24) + 'px,' + (y * -24) + 'px,0)';
+});
+
+window.addEventListener('scroll', function() {
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  var maxScroll = container.scrollHeight - window.innerHeight;
+  targetProgress = maxScroll > 0 ? Math.max(0, Math.min(1, scrollTop / maxScroll)) : 0;
+}, { passive: true });
+
+function setVisible(el, v) { if (!el) return; el.style.visibility = v ? 'visible' : 'hidden'; el.style.pointerEvents = v ? 'auto' : 'none'; }
+function applyStyle(el, op, tx, ty, bl) {
+  if (!el) return;
+  el.style.opacity = op;
+  el.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0)';
+  el.style.filter = 'blur(' + bl + 'px)';
+}
+
+function tick() {
+  currentProgress += (targetProgress - currentProgress) * 0.06;
+  var p = currentProgress;
+
+  if (!IS_MOBILE) {
+    var activeKey = getActiveKey(p);
+    var pLocal = activeKey === 'v1' ? Math.max(0, Math.min(1, p * 3))
+      : activeKey === 'v2' ? Math.max(0, Math.min(1, (p - 0.333) * 3))
+      : Math.max(0, Math.min(1, (p - 0.666) * 3));
+    safeSeek(activeKey, pLocal * (durations[activeKey] || 10));
+  }
+
+  var f = Math.min(1, Math.max(0, p / 0.15));
+  applyStyle(botanicalCard, 1 - f, f * -35, f * 35, f * 16);
+  botanicalCard.style.pointerEvents = f > 0.95 ? 'none' : 'auto';
+
+  f = Math.min(1, Math.max(0, (p - 0.03) / 0.15));
+  applyStyle(navHeader, 1 - f, 0, f * -35, f * 14);
+  navHeader.style.pointerEvents = f > 0.95 ? 'none' : 'auto';
+
+  f = Math.min(1, Math.max(0, (p - 0.06) / 0.15));
+  applyStyle(brandHeader, 1 - f, f * -25, f * -35, f * 12);
+  brandHeader.style.pointerEvents = f > 0.95 ? 'none' : 'auto';
+
+  var show = p > 0.13 && p < 0.55;
+  setVisible(featuresContainer, show);
+  function animCard(el, enterStart, enterDur, exitStart, exitDur, tx, ty) {
+    if (!el) return;
+    var op = 0, bl = 16, x = tx, y = ty;
+    if (p >= enterStart && p <= 0.333) {
+      var r = Math.min(1, Math.max(0, (p - enterStart) / enterDur));
+      op = r; bl = (1 - r) * 16; x = (1 - r) * tx; y = (1 - r) * ty;
+    } else if (p > 0.333 && p <= exitStart + exitDur) {
+      var r = Math.min(1, Math.max(0, (p - exitStart) / exitDur));
+      op = 1 - r; bl = r * 16; x = r * tx; y = r * ty;
+    }
+    applyStyle(el, op, x, y, bl);
+  }
+  animCard(fCard1, 0.15, 0.15, 0.333, 0.12, -35, 35);
+  animCard(fCard2, 0.18, 0.13, 0.333, 0.15, 0, 35);
+  animCard(fCard3, 0.21, 0.11, 0.333, 0.18, 35, 35);
+
+  setVisible(missionContainer, p > 0.44);
+  function animPara(el, inS, inE, holdE, outE) {
+    if (!el) return;
+    var op = 0, bl = 20, y = 120;
+    if (p >= inS && p < inE) { var r = (p - inS) / (inE - inS); op = r; bl = (1 - r) * 20; y = (1 - r) * 120; }
+    else if (p >= inE && p <= holdE) { op = 1; bl = 0; y = 0; }
+    else if (p > holdE && p <= outE) { var r = (p - holdE) / (outE - holdE); op = 1 - r; bl = r * 20; y = r * -120; }
+    else if (p > outE) { op = 0; bl = 20; y = -120; }
+    applyStyle(el, op, 0, y, bl);
+  }
+  animPara(mPara1, 0.44, 0.47, 0.59, 0.62);
+  animPara(mPara2, 0.62, 0.65, 0.77, 0.80);
+  animPara(mPara3, 0.80, 0.83, 0.95, 0.98);
+
+  setVisible(feedbackContainer, p > 0.93);
+  if (p > 0.93) {
+    var opF = 0, blF = 20, yF = 120;
+    if (p >= 0.94 && p < 0.97) { var r = (p - 0.94) / 0.03; opF = r; blF = (1 - r) * 20; yF = (1 - r) * 120; }
+    else if (p >= 0.97) { opF = 1; blF = 0; yF = 0; }
+    applyStyle(feedbackForm, opF, 0, yF, blF);
+  }
+
+  if (!IS_MOBILE) drawFrame();
+  requestAnimationFrame(tick);
+}
+if (IS_MOBILE) {
+  // Mobile: play video element directly, loop forever
+  var mv = videos.v1;
+  mv.loop = true;
+  mv.muted = true;
+  mv.setAttribute('playsinline','');
+  var startPlay = function(){
+    try { mv.playbackRate = 1.5; } catch(e){}
+    mv.play().catch(function(){});
+  };
+  startPlay();
+  mv.addEventListener('loadedmetadata', function(){ try{ mv.playbackRate = 1.5; }catch(e){} });
+  mv.addEventListener('canplay', function(){ startPlay(); setTimeout(function(){loadingScreen.classList.add('hidden');}, 300); }, {once:true});
+  document.addEventListener('touchstart', startPlay, {once:true});
+  setTimeout(function(){ loadingScreen.classList.add('hidden'); }, 3000);
+  // Still run tick() for the scroll-driven CARD/TEXT animations (no video scrubbing)
+  requestAnimationFrame(tick);
+} else {
+  requestAnimationFrame(tick);
+}
+
+/* ── HAMBURGER ────────────────────────────── */
+var menuOpen = false;
+var hamburgerBtn = g('hamburgerBtn');
+var mobileMenu = g('mobileMenu');
+var hLine1 = g('hLine1'), hLine2 = g('hLine2'), hLine3 = g('hLine3');
+hamburgerBtn.addEventListener('click', function() {
+  menuOpen = !menuOpen;
+  mobileMenu.classList.toggle('open', menuOpen);
+  hLine1.classList.toggle('top-open', menuOpen);
+  hLine2.classList.toggle('mid-open', menuOpen);
+  hLine3.classList.toggle('bot-open', menuOpen);
+});
+window.closeMob = function() {
+  menuOpen = false;
+  mobileMenu.classList.remove('open');
+  hLine1.classList.remove('top-open');
+  hLine2.classList.remove('mid-open');
+  hLine3.classList.remove('bot-open');
+};
+
+/* ── FORM ─────────────────────────────────── */
+g('fbForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (g('fbName').value.trim() && g('fbEmail').value.trim()) {
+    var btn = g('fbBtn');
+    btn.textContent = lang === 'uz' ? 'YUBORILDI' : '\u041e\u0422\u041f\u0420\u0410\u0412\u041b\u0415\u041d\u041e';
+    btn.classList.add('submitted'); btn.disabled = true;
+    g('fbSuccess').classList.add('show');
+  }
+});
+
+})();
+
+/* ═══ MOBILE LAYOUT LOGIC ═══ */
+(function(){
+  var mLangText={uz:{
+    lang:"RU",
+    nav1:"Biz haqimizda",nav2:"Xizmatlar",nav3:"Bog\u2019lanish",
+    heroBadge:"Raqamli marketing",
+    heroTitle:"Sizning <em>biznesingiz</em> uchun raqamli kuch.",
+    heroSub:"Sizning biznesingiz uchun ijtimoiy tarmoqlar strategiyasi, zamonaviy veb-saytlar va avtomatlashtirish yechimlari.",
+    heroBtn:"Biz bilan bog\u02BBlaning \u2014 bu bepul",
+    aboutLabel:"Biz haqimizda",aboutTitle:"Raqamli olamda <em>brendingizni</em> rivojlantiring",
+    aboutP1:"FZ Digital \u2014 to\u2018liq xizmat ko\u2018rsatuvchi raqamli marketing agentligi. Biz samarali marketing strategiyalari, zamonaviy veb-saytlar va avtomatlashtirish yechimlari yaratamiz.",
+    aboutP2:"Bizning maqsadimiz \u2014 har bir mijozning onlayn mavjudligini haqiqiy biznes o\u2018sishiga aylantirish.",
+    stat1:"Mamnun mijozlar",stat2:"Yillik tajriba",stat3:"Loyihalar",
+    servLabel:"Xizmatlar",servTitle:"Bizning <em>xizmatlarimiz</em>",
+    s1t:"Ijtimoiy tarmoqlar",s1d:"Organik strategiya, kontent yaratish va doimiy faollik orqali brendingizni rivojlantiring.",
+    s2t:"Veb-sayt yaratish",s2d:"Tez, responsiv va zamonaviy veb-saytlar \u2014 marketing va lead generatsiyani qo\u2018llab-quvvatlovchi.",
+    s3t:"Bot yaratish",s3d:"Telegram uchun maxsus chatbotlar \u2014 mijozlarga xizmat ko\u2018rsatish va avtomatlashtirish.",
+    s4t:"Raqamli vizitka",s4d:"Zamonaviy raqamli vizit kartalar \u2014 profillaringizga bir zumda ulanish.",
+    missLabel:"Missiyamiz",
+    mis1:"Har bir biznesni <span class='pill'>raqamli olamda</span> kuchli qilish.",
+    mis2:"Ijtimoiy tarmoqlar orqali <span class='pill'>brendingizni</span> yuksaltirish.",
+    mis3:"Sizning <span class='pill'>raqamli hamkor</span>ingiz bo\u2018lish.",
+    contLabel:"Bog\u2019lanish",contTitle:"Biz bilan <em>bog\u2019laning</em>",
+    namePh:"Ismingiz",emailPh:"Email manzilingiz",sub:"YO\u02BBLLANG",ok:"Rahmat! Tez orada siz bilan bog\u02BBlanamiz.",
+    copy:"\u00A9 2026 FZ Digital. Barcha huquqlar himoyalangan."
+  },ru:{
+    lang:"O\u02BBZ",
+    nav1:"\u041e \u043d\u0430\u0441",nav2:"\u0423\u0441\u043b\u0443\u0433\u0438",nav3:"\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b",
+    heroBadge:"\u0426\u0438\u0444\u0440\u043e\u0432\u043e\u0439 \u043c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433",
+    heroTitle:"\u0426\u0438\u0444\u0440\u043e\u0432\u0430\u044f \u0441\u0438\u043b\u0430 \u0434\u043b\u044f <em>\u0432\u0430\u0448\u0435\u0433\u043e</em> \u0431\u0438\u0437\u043d\u0435\u0441\u0430.",
+    heroSub:"\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0441\u043e\u0446\u0441\u0435\u0442\u0435\u0439, \u0441\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435 \u0441\u0430\u0439\u0442\u044b \u0438 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u0434\u043b\u044f \u0432\u0430\u0448\u0435\u0433\u043e \u0431\u0438\u0437\u043d\u0435\u0441\u0430.",
+    heroBtn:"\u0421\u0432\u044f\u0436\u0438\u0442\u0435\u0441\u044c \u0441 \u043d\u0430\u043c\u0438 \u2014 \u044d\u0442\u043e \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e",
+    aboutLabel:"\u041e \u043d\u0430\u0441",aboutTitle:"\u0420\u0430\u0437\u0432\u0438\u0432\u0430\u0435\u043c \u0432\u0430\u0448 <em>\u0431\u0440\u0435\u043d\u0434</em> \u0432 \u0446\u0438\u0444\u0440\u043e\u0432\u043e\u043c \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u0435",
+    aboutP1:"FZ Digital \u2014 \u043f\u043e\u043b\u043d\u043e\u0441\u0435\u0440\u0432\u0438\u0441\u043d\u043e\u0435 digital-\u0430\u0433\u0435\u043d\u0442\u0441\u0442\u0432\u043e. \u041c\u044b \u0441\u043e\u0437\u0434\u0430\u0451\u043c \u044d\u0444\u0444\u0435\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438, \u0441\u0430\u0439\u0442\u044b \u0438 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044e.",
+    aboutP2:"\u041d\u0430\u0448\u0430 \u0446\u0435\u043b\u044c \u2014 \u043f\u0440\u0435\u0432\u0440\u0430\u0442\u0438\u0442\u044c \u043e\u043d\u043b\u0430\u0439\u043d-\u043f\u0440\u0438\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0432 \u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0440\u043e\u0441\u0442.",
+    stat1:"\u0414\u043e\u0432\u043e\u043b\u044c\u043d\u044b\u0445 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u0432",stat2:"\u041b\u0435\u0442 \u043e\u043f\u044b\u0442\u0430",stat3:"\u041f\u0440\u043e\u0435\u043a\u0442\u043e\u0432",
+    servLabel:"\u0423\u0441\u043b\u0443\u0433\u0438",servTitle:"\u041d\u0430\u0448\u0438 <em>\u0443\u0441\u043b\u0443\u0433\u0438</em>",
+    s1t:"\u0421\u043e\u0446\u0441\u0435\u0442\u0438",s1d:"\u041e\u0440\u0433\u0430\u043d\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u044f \u0438 \u043f\u043e\u0441\u0442\u043e\u044f\u043d\u043d\u0430\u044f \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c.",
+    s2t:"\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0441\u0430\u0439\u0442\u043e\u0432",s2d:"\u0411\u044b\u0441\u0442\u0440\u044b\u0435 \u0430\u0434\u0430\u043f\u0442\u0438\u0432\u043d\u044b\u0435 \u0441\u0430\u0439\u0442\u044b \u0434\u043b\u044f \u043c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433\u0430.",
+    s3t:"\u0420\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0431\u043e\u0442\u043e\u0432",s3d:"\u0427\u0430\u0442-\u0431\u043e\u0442\u044b \u0434\u043b\u044f Telegram \u0438 \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f.",
+    s4t:"\u0426\u0438\u0444\u0440\u043e\u0432\u044b\u0435 \u0432\u0438\u0437\u0438\u0442\u043a\u0438",s4d:"\u0421\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435 \u0446\u0438\u0444\u0440\u043e\u0432\u044b\u0435 \u0432\u0438\u0437\u0438\u0442\u043a\u0438.",
+    missLabel:"\u041c\u0438\u0441\u0441\u0438\u044f",
+    mis1:"\u0414\u0435\u043b\u0430\u0435\u043c \u043a\u0430\u0436\u0434\u044b\u0439 \u0431\u0438\u0437\u043d\u0435\u0441 <span class='pill'>\u0432\u0438\u0434\u0438\u043c\u044b\u043c</span>.",
+    mis2:"\u0427\u0435\u0440\u0435\u0437 \u0441\u043e\u0446\u0441\u0435\u0442\u0438 \u0432\u044b\u0432\u043e\u0434\u0438\u043c \u0432\u0430\u0448 <span class='pill'>\u0431\u0440\u0435\u043d\u0434</span> \u0432\u043f\u0435\u0440\u0451\u0434.",
+    mis3:"\u0421\u0442\u0430\u043d\u043e\u0432\u0438\u043c\u0441\u044f \u0432\u0430\u0448\u0438\u043c <span class='pill'>\u0446\u0438\u0444\u0440\u043e\u0432\u044b\u043c \u043f\u0430\u0440\u0442\u043d\u0451\u0440\u043e\u043c</span>.",
+    contLabel:"\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b",contTitle:"\u0421\u0432\u044f\u0436\u0438\u0442\u0435\u0441\u044c <em>\u0441 \u043d\u0430\u043c\u0438</em>",
+    namePh:"\u0412\u0430\u0448\u0435 \u0438\u043c\u044f",emailPh:"\u0412\u0430\u0448 email",sub:"\u041e\u0422\u041f\u0420\u0410\u0412\u0418\u0422\u042c",ok:"\u0421\u043f\u0430\u0441\u0438\u0431\u043e! \u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0441\u043a\u043e\u0440\u043e.",
+    copy:"\u00A9 2026 FZ Digital. \u0412\u0441\u0435 \u043f\u0440\u0430\u0432\u0430 \u0437\u0430\u0449\u0438\u0449\u0435\u043d\u044b."
+  }};
+  var ml='uz';
+  function mg(id){return document.getElementById(id);}
+  function mtext(id,v){var e=mg(id);if(e)e.textContent=v;}
+  function mhtml(id,v){var e=mg(id);if(e)e.innerHTML=v;}
+  function setMobLang(l){
+    ml=l;var d=mLangText[l];
+    mtext('mLang',d.lang);
+    mtext('mm1',d.nav1);mtext('mm2',d.nav2);mtext('mm3',d.nav3);
+    mtext('mHeroBadge',d.heroBadge);mhtml('mHeroTitle',d.heroTitle);mtext('mHeroSub',d.heroSub);mtext('mHeroBtn',d.heroBtn);
+    mtext('mAboutLabel',d.aboutLabel);mhtml('mAboutTitle',d.aboutTitle);mtext('mAboutP1',d.aboutP1);mtext('mAboutP2',d.aboutP2);
+    mtext('mStat1',d.stat1);mtext('mStat2',d.stat2);mtext('mStat3',d.stat3);
+    mtext('mServLabel',d.servLabel);mhtml('mServTitle',d.servTitle);
+    mtext('mс1t',d.s1t);mtext('ms1d',d.s1d);mtext('ms2t',d.s2t);mtext('ms2d',d.s2d);
+    mtext('ms3t',d.s3t);mtext('ms3d',d.s3d);mtext('ms4t',d.s4t);mtext('ms4d',d.s4d);
+    mtext('mMissLabel',d.missLabel);mhtml('mMis1',d.mis1);mhtml('mMis2',d.mis2);mhtml('mMis3',d.mis3);
+    mtext('mContLabel',d.contLabel);mhtml('mContTitle',d.contTitle);
+    var mn=mg('mName');if(mn)mn.placeholder=d.namePh;
+    var me=mg('mEmail');if(me)me.placeholder=d.emailPh;
+    var sb=mg('mSubmit');if(sb&&!sb.classList.contains('done'))sb.textContent=d.sub;
+    mtext('mOk',d.ok);mtext('mFootCopy',d.copy);
+    document.documentElement.lang=l;
+  }
+  var ll=mg('mLang');if(ll)ll.addEventListener('click',function(){setMobLang(ml==='uz'?'ru':'uz');});
+
+  /* Hamburger */
+  var ham=mg('mHam'),menu=mg('mMenu');
+  if(ham)ham.addEventListener('click',function(){
+    var o=menu.classList.toggle('open');ham.classList.toggle('open',o);
+  });
+  document.querySelectorAll('.m-mlink').forEach(function(a){
+    a.addEventListener('click',function(){menu.classList.remove('open');ham.classList.remove('open');});
+  });
+
+  /* Fade in on scroll */
+  var fades=document.querySelectorAll('.mobile-layout .m-fade');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});
+    },{threshold:0.15});
+    fades.forEach(function(f){io.observe(f);});
+  } else {
+    fades.forEach(function(f){f.classList.add('in');});
+  }
+
+  /* Force mobile video play */
+  var mv=mg('mVideo');
+  if(mv){
+    mv.play().catch(function(){});
+    document.addEventListener('touchstart',function(){mv.play().catch(function(){});},{once:true});
+  }
+
+  /* Mobile form */
+  var mf=mg('mForm');
+  if(mf)mf.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(mg('mName').value.trim()&&mg('mEmail').value.trim()){
+      var b=mg('mSubmit');b.textContent=ml==='uz'?'YUBORILDI':'\u041e\u0422\u041f\u0420\u0410\u0412\u041b\u0415\u041d\u041e';
+      b.classList.add('done');b.disabled=true;mg('mOk').classList.add('show');
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
